@@ -1,14 +1,17 @@
-//lo que no se modifica aquí
-const name = "Melanie";
+const Greeting = (props) => {
 
-const Greeting = () => {
-    //js aquí
+  const {name: nombre= "nn", data, age = 0} = props
+  console.log(data.date)
   return (
     <>
-      <p>Lunes 06-10-2025</p>
-      <h1>{name} Bienvenida A NUESTRA WEB!!!</h1>
+      <p>Lunes {data.date}</p>
+      <p>edad: {age}</p>
+      {/* <p>Egresada: {age}</p> */}
+
+      <h1>{nombre} Bienvenida A NUESTRA WEB!!!</h1>
     </>
   );
 };
 
 export default Greeting;
+

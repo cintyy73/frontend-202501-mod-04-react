@@ -1,10 +1,10 @@
 const numbers = [1, 2, 34, 5, 6];
 
-export const List = () => {
+export const List = (props) => {
   return (
     <ul>
-      {numbers.map((number) => (
-        <li>{number}</li>
+      {numbers.map(() => (
+        <li>{props.number}</li>
       ))}
     </ul>
   );
