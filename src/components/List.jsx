@@ -1,11 +1,12 @@
-const numbers = [1, 2, 34, 5, 6];
+import Card from "./Card"
 
-export const List = (props) => {
+const List = ({data}) => {
+console.log(data)
   return (
-    <ul>
-      {numbers.map(() => (
-        <li>{props.number}</li>
-      ))}
-    </ul>
-  );
-};
+    <div style={{ padding:'3px'}}>
+      {data.map((e)=><Card key={e.id} element={e} color='red' lugar='bs as'/>)}
+    </div>
+  )
+}
+
+export default List
