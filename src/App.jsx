@@ -1,35 +1,35 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import List from './components/List';
+import {users , suma } from './utils/data'
 
 function App() {
-  const [count, setCount] = useState(0)
-
+console.log(suma(5,6))
+const activeUsers = users.filter(user=>user.isActive)
+console.log(activeUsers)
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <div style={styles.wrapper}>
+      <h1>Gestión de Usuarios</h1>
+   
+      <List title='Todos los usuarios' users={users} />
+      <hr/>
+      <List title='Usuarios activos' users={activeUsers} />
 
-export default App
+    </div>
+  );
+}
+const styles = {
+  wrapper: {
+    padding: "20px",
+    textAlign: "center",
+  },
+  filterBtn: {
+    background: "#2ecc71",
+    color: "#fff",
+    border: "none",
+    padding: "10px 16px",
+    cursor: "pointer",
+    borderRadius: "8px",
+    fontSize: "14px",
+    marginBottom: "10px",
+  },
+};
+export default App;
