@@ -1,35 +1,73 @@
-import List from './components/List';
-import {users , suma } from './utils/data'
-
+import { useState } from "react";
+import List from "./components/List";
+import {users  } from './utils/data'
+let counter = 0;
 function App() {
-console.log(suma(5,6))
-const activeUsers = users.filter(user=>user.isActive)
-console.log(activeUsers)
+const [count, setCount] = useState(10);  
+
   return (
-    <div style={styles.wrapper}>
-      <h1>Gestión de Usuarios</h1>
-   
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        gap: "10px",
+        flexDirection: "column",
+      }}
+    >
+       <h2>Contador</h2>
+        <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        gap: "10px",
+        flexDirection: "column",
+       
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          gap: "10px",
+        }}
+      >
+        <button
+          onClick={() => {
+            counter += 1;
+            document.getElementById("counter-display").innerText = counter;
+            console.log(counter);
+          }}
+        >
+          +
+        </button>
+        <p id="counter-display">{counter}</p>
+        <button
+          onClick={() => {
+            counter -= 1;
+            document.getElementById("counter-display").innerText = counter;
+            console.log(counter);
+          }}
+        >
+          -
+        </button>
+
+        <button onClick={() => {setCount(count-10)
+          console.log(count)
+        } }>-</button>
+
+        <p>{count}</p>
+
+        <button onClick={() => setCount(count+10)}>+</button>
+      </div>
+      </div>
       <List title='Todos los usuarios' users={users} />
-      <hr/>
-      <List title='Usuarios activos' users={activeUsers} />
+
 
     </div>
   );
 }
-const styles = {
-  wrapper: {
-    padding: "20px",
-    textAlign: "center",
-  },
-  filterBtn: {
-    background: "#2ecc71",
-    color: "#fff",
-    border: "none",
-    padding: "10px 16px",
-    cursor: "pointer",
-    borderRadius: "8px",
-    fontSize: "14px",
-    marginBottom: "10px",
-  },
-};
+
 export default App;
