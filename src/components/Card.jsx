@@ -1,4 +1,4 @@
-const Card = ({user, toggleActive}) => {
+const Card = ({user}) => {
     const {name, email, country, role, isActive} = user
   return (
     <div>
@@ -7,9 +7,6 @@ const Card = ({user, toggleActive}) => {
       <p><strong>País:</strong> {country}</p>
       <p><strong>Rol:</strong> {role}</p>
       <p><strong>Estado:</strong>{isActive ? "Activo" : "Baja" }</p>
-         <button  onClick={toggleActive}>
-        Cambiar Estado
-      </button>
     </div>
   )
 }
