@@ -1,6 +1,12 @@
-import '../index.css';
+import "../index.css";
 
 export default function SimpleFormBase() {
+  // const [form, setForm] = useState({
+  //   name: "",
+  //   email: "",
+  //   role: "frontend",
+  //   active: false,
+  // });
   return (
     <section className="section">
       <h3>5) Formulario simple</h3>
@@ -25,7 +31,9 @@ export default function SimpleFormBase() {
           <input name="active" type="checkbox" />
           Activo
         </label>
-        <button type="submit" className="button">Enviar</button>
+        <button type="submit" className="button">
+          Enviar
+        </button>
       </form>
     </section>
   );

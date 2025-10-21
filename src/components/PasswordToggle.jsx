@@ -1,8 +1,10 @@
 // Componente Base: Campo de contraseña con botón para mostrar/ocultar
 // Sin useState - versión estática para práctica
+import { useState } from 'react';
 import '../index.css';
 
 export default function PasswordToggle() {
+  const [show, setShow] = useState(false)
   return (
     <section className="section">
       <h3>6) Toggle de Contraseña</h3>
@@ -12,7 +14,7 @@ export default function PasswordToggle() {
           {/* Campo de entrada para la contraseña */}
           <input
             id="password"
-            type="password"
+            type={show ? 'input' : 'password'}
             placeholder="Ingrese su contraseña"
             className="input"
           />
@@ -20,8 +22,11 @@ export default function PasswordToggle() {
           <button
             type="button"
             className="button"
+            onClick={() => {
+              console.log(!show)
+              setShow(prev => !prev)} }
           >
-            Mostrar
+            {show ? "Ocultar" : "Mostrar"}
           </button>
         </div>
       </div>
