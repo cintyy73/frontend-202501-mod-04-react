@@ -4,6 +4,7 @@ import { useState } from 'react';
 import '../index.css';
 
 export default function PasswordToggle() {
+  // useState para alternar la visibilidad de la contraseña
   const [show, setShow] = useState(false)
   return (
     <section className="section">
@@ -14,7 +15,7 @@ export default function PasswordToggle() {
           {/* Campo de entrada para la contraseña */}
           <input
             id="password"
-            type={show ? 'input' : 'password'}
+            type={show ? 'input' : 'password'} // Cambia el tipo según el estado
             placeholder="Ingrese su contraseña"
             className="input"
           />
@@ -23,7 +24,7 @@ export default function PasswordToggle() {
             type="button"
             className="button"
             onClick={() => {
-              console.log(!show)
+              // Cambia el estado para mostrar/ocultar
               setShow(prev => !prev)} }
           >
             {show ? "Ocultar" : "Mostrar"}

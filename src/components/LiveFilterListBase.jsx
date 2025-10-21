@@ -9,6 +9,7 @@ const initialUsers = [
 ];
 
 export default function LiveFilterListBase() {
+  // useState para guardar el texto del filtro
   const [value, setValue] = useState("");
 
   const query = value.trim().toLowerCase();
@@ -25,11 +26,11 @@ export default function LiveFilterListBase() {
       <h3>3) Filtro en vivo</h3>
       <input
         type="text"
-        value={value}
+        value={value} // El valor del input está en el estado
         placeholder="Buscar por nombre o rol"
         className="input"
         onChange={(e) => {
-          setValue(e.target.value);
+          setValue(e.target.value); // Actualiza el estado en cada cambio
           console.log(value);
         }}
       />
