@@ -1,35 +1,43 @@
-import List from './components/List';
-import {users , suma } from './utils/data'
+import { useState } from "react";
+import Login from "./components/Login";
+import Register from "./components/Register";
+import WelcomeMessage from "./components/WelcomeMessage";
 
 function App() {
-console.log(suma(5,6))
-const activeUsers = users.filter(user=>user.isActive)
-console.log(activeUsers)
+  const [user, setUser] = useState("");
+  const [passwordLogin, setPasswordLogin] = useState("");
+  const [userName, setUserName] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   return (
-    <div style={styles.wrapper}>
-      <h1>Gestión de Usuarios</h1>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: "20px",
+      }}
+    >
+     {!user && <Register
+        userName={userName}
+        password={password}
+        confirmPassword={confirmPassword}
+        setUserName={setUserName}
+        setPassword={setPassword}
+        setConfirmPassword={setConfirmPassword}
+      />}
+      <Login
+        userName={userName}
+        password={password}
+        user={user}
+        passwordLogin={passwordLogin}
+        setUser={setUser}
+        setPasswordLogin={setPasswordLogin}
+      />
+      <WelcomeMessage user={user} />
    
-      <List title='Todos los usuarios' users={users} />
-      <hr/>
-      <List title='Usuarios activos' users={activeUsers} />
-
     </div>
   );
 }
-const styles = {
-  wrapper: {
-    padding: "20px",
-    textAlign: "center",
-  },
-  filterBtn: {
-    background: "#2ecc71",
-    color: "#fff",
-    border: "none",
-    padding: "10px 16px",
-    cursor: "pointer",
-    borderRadius: "8px",
-    fontSize: "14px",
-    marginBottom: "10px",
-  },
-};
+
 export default App;

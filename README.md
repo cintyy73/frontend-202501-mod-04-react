@@ -1,175 +1,40 @@
-# Clase 05: Introducción a los Hooks en React
+# Clase 07: Elevar Estado en React (Lifting State Up)
 
-## Reglas de los Hooks
-1. **Llamar Hooks solo en el nivel superior**: No uses Hooks dentro de loops, condiciones o funciones anidadas.
-2. **Llamar Hooks solo desde funciones de React**: Usa Hooks únicamente en componentes funcionales o tus propios Hooks personalizados.
+## Teoría
 
-### Ejemplo:
-```jsx
-import { useState } from 'react';
+En React, "elevar el estado" (lifting state up) es una técnica para compartir datos entre componentes. Cuando dos o más componentes necesitan acceder o modificar la misma información, se recomienda mover ese estado al ancestro común más cercano (generalmente el componente padre). Así, los componentes hijos pueden comunicarse a través de props y funciones.
 
-function Counter() {
-  const [count, setCount] = useState(0);
+**¿Por qué elevar el estado?**
+- Permite sincronizar datos entre componentes.
+- Evita duplicar lógica y estados.
+- Facilita la reutilización y el mantenimiento del código.
 
-  return (
-    <div>
-      <p>Contador: {count}</p>
-      <button onClick={() => setCount(count + 1)}>Incrementar</button>
-    </div>
-  );
-}
-```
+**Ejemplo clásico:**
+- Un formulario de login donde el estado del usuario y la contraseña se gestiona en el componente padre, y los hijos (formulario y mensaje de bienvenida) acceden y modifican ese estado.
 
----
+## Guía de Clase
 
-## Estado en React
-El estado es una forma de almacenar datos que cambian con el tiempo en un componente.
+1. **Preguntas**
+   - ¿Cuándo NO conviene elevar el estado?
+     - No conviene elevar el estado cuando solo un componente necesita ese dato, ya que hacerlo puede complicar innecesariamente la estructura del código.
+     - Si el estado es muy global y muchos componentes en diferentes niveles lo necesitan, puede ser mejor usar otras soluciones como Context API o Redux.
+     - Cuando el estado no afecta a otros componentes y no hay necesidad de compartirlo, mantenerlo local es más simple y eficiente.
+   - ¿Qué alternativas existen (context, redux, etc)?
+     - **Context API:** Permite compartir datos globales entre componentes sin necesidad de pasar props manualmente por cada nivel. Es útil para temas, usuario autenticado, idioma, etc.
+     - **Redux/MobX/Zustand:** Son librerías externas para manejar estados globales complejos. Se usan en aplicaciones grandes donde muchos componentes necesitan acceder y modificar el mismo estado.
+     - **Props drilling:** Pasar props por varios niveles, pero puede volverse difícil de mantener si la estructura es profunda.
+     - **Custom hooks:** Permiten encapsular lógica de estado y reutilizarla en varios componentes.
 
-### Ejemplo:
-```jsx
-function Example() {
-  const [name, setName] = useState('');
-
-  return (
-    <div>
-      <input
-        type="text"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-      />
-      <p>Hola, {name}!</p>
-    </div>
-  );
-}
-```
+5. **Resumen**
+   - Repasar ventajas y desventajas.
+     - **Ventajas:** Facilita la sincronización de datos, mejora la comunicación entre componentes, evita duplicación de lógica.
+     - **Desventajas:** Puede hacer el componente padre más complejo, y si se abusa puede dificultar la escalabilidad.
+   - Buenas prácticas para organizar el estado en aplicaciones React.
+     - Mantén el estado lo más local posible.
+     - Eleva el estado solo cuando sea necesario compartirlo.
+     - Considera usar Context o Redux para estados globales.
+     - Divide los componentes en partes pequeñas y reutilizables.
 
 ---
 
-## Inmutabilidad
-En React, nunca debes modificar el estado directamente. En su lugar, crea una nueva copia del estado.
-
-### Ejemplo:
-```jsx
-function List() {
-  const [items, setItems] = useState([]);
-
-  const addItem = () => {
-    setItems([...items, `Elemento ${items.length + 1}`]);
-  };
-
-  return (
-    <div>
-      <button onClick={addItem}>Agregar elemento</button>
-      <ul>
-        {items.map((item, index) => (
-          <li key={index}>{item}</li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-```
-
----
-
-## useState paso a paso
-1. Importa `useState` desde React.
-2. Declara una variable de estado y su función para actualizarla.
-3. Usa la variable de estado en tu componente.
-4. Actualiza el estado con la función proporcionada.
-
-### Ejemplo:
-```jsx
-function StepByStep() {
-  const [count, setCount] = useState(0);
-
-  const increment = () => setCount(count + 1);
-
-  return (
-    <div>
-      <p>Contador: {count}</p>
-      <button onClick={increment}>Incrementar</button>
-    </div>
-  );
-}
-```
-
----
-
-## Estado vs Props
-- **Estado**: Datos locales al componente, pueden cambiar.
-- **Props**: Datos pasados desde un componente padre, son inmutables.
-
-### Ejemplo:
-```jsx
-function Child({ message }) {
-  return <p>{message}</p>;
-}
-
-function Parent() {
-  const [text, setText] = useState('Hola desde el padre');
-
-  return (
-    <div>
-      <Child message={text} />
-      <button onClick={() => setText('Mensaje actualizado')}>Actualizar</button>
-    </div>
-  );
-}
-```
-
----
-
-## Pasando funciones como props
-Puedes pasar funciones desde un componente padre a un hijo para manejar eventos.
-
-### Ejemplo:
-```jsx
-function Child({ onButtonClick }) {
-  return <button onClick={onButtonClick}>Haz clic</button>;
-}
-
-function Parent() {
-  const handleClick = () => alert('Botón clicado');
-
-  return <Child onButtonClick={handleClick} />;
-}
-```
-
----
-
-## Atributos de eventos (onClick, etc.)
-React utiliza camelCase para los nombres de los atributos de eventos.
-
-### Ejemplo:
-```jsx
-function EventExample() {
-  const handleClick = () => console.log('Botón clicado');
-
-  return <button onClick={handleClick}>Clic aquí</button>;
-}
-```
-
----
-
-## Más información sobre Hooks
-
-### ¿Qué son los Hooks?
-Los Hooks son una nueva adición en React 16.8 que permiten usar estado y otras características de React sin escribir una clase. Los Hooks son funciones que te permiten "enganchar" características de React en componentes funcionales.
-
-### ¿Por qué usar Hooks?
-1. **Reutilización de lógica de estado**: Los Hooks permiten reutilizar lógica de estado entre componentes sin cambiar la jerarquía de componentes.
-2. **Componentes más simples**: Reducen la necesidad de usar clases, haciendo que los componentes sean más fáciles de entender y probar.
-3. **Mejor manejo de efectos secundarios**: Con `useEffect`, puedes manejar efectos secundarios como suscripciones o actualizaciones del DOM de manera más clara.
-
-### Principales Hooks en React
-1. **useState**: Maneja el estado local en un componente funcional.
-2. **useEffect**: Maneja efectos secundarios como llamadas a APIs o suscripciones.
-3. **useContext**: Accede al contexto sin necesidad de un componente de orden superior.
-4. **useReducer**: Alternativa a `useState` para manejar lógica de estado más compleja.
-5. **useRef**: Accede directamente a un elemento del DOM o guarda valores persistentes entre renders.
-6. **useMemo**: Memoriza valores calculados para optimizar el rendimiento.
-7. **useCallback**: Memoriza funciones para evitar renders innecesarios.
-
-
----
+**Tip:** Si el estado solo lo usa un componente, mantenlo local. Si lo usan varios, ¡eleva el estado!
