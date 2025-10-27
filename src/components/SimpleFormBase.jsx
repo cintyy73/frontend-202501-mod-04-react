@@ -1,36 +1,37 @@
+import { useState } from "react";
 import "../index.css";
 
 export default function SimpleFormBase() {
-  // const [form, setForm] = useState({
-  //   name: "",
-  //   email: "",
-  //   role: "frontend",
-  //   active: false,
-  // });
+  const [form, setForm] = useState({
+    user: "", // uso el name del input
+    email: "",
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+    console.log({[name]: value})
+    console.log(e.target)
+  };
+
   return (
     <section className="section">
-      <h3>5) Formulario simple</h3>
+      <h3>Formulario simple</h3>
       <form className="grid">
         <label className="grid">
           Nombre
-          <input name="name" type="text" className="input" />
+          <input onChange={handleChange} value={form.user} name="user" type="text" className="input" />
         </label>
         <label className="grid">
           Email
-          <input name="email" type="email" className="input" />
+          <input onChange={handleChange}
+            value={form.email}
+            name="email"
+            type="email"
+            className="input"
+          />
         </label>
-        <label className="grid">
-          Rol
-          <select name="role" className="input">
-            <option value="frontend">Frontend</option>
-            <option value="backend">Backend</option>
-            <option value="design">Diseño</option>
-          </select>
-        </label>
-        <label className="label">
-          <input name="active" type="checkbox" />
-          Activo
-        </label>
+
         <button type="submit" className="button">
           Enviar
         </button>
