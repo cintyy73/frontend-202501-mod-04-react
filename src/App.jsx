@@ -1,35 +1,43 @@
-import List from './components/List';
-import {users , suma } from './utils/data'
+import { useState } from "react";
+import './app.css'
+import CosteHotel from "./components/CosteHotel";
+import CosteAlquiler from "./components/CosteAlquiler";
+import ButtonModule from "./buttons/ButtonModule";
+import Icon from "./Icon";
+import IconExample from "./Icon";
+
+import dog from './assets/dog.png'
 
 function App() {
-console.log(suma(5,6))
-const activeUsers = users.filter(user=>user.isActive)
-console.log(activeUsers)
-  return (
-    <div style={styles.wrapper}>
-      <h1>Gestión de Usuarios</h1>
-   
-      <List title='Todos los usuarios' users={users} />
-      <hr/>
-      <List title='Usuarios activos' users={activeUsers} />
 
+  const [night, setNight] = useState(0)
+  
+  const handleNight = (e) =>{
+    setNight(e.target.value)
+    console.log(night)
+  }
+
+  return (
+    <div>
+      <img src="https://img.freepik.com/foto-gratis/setter-irlandes_1398-4793.jpg?semt=ais_hybrid&w=740&q=80" alt="dog" />
+
+      {/* <img src="src/assets/dog.png"/>  */}
+      <img src={dog}/>
+        <h1 className="prueba">Calculadora de costo de viaje</h1>
+      <div>
+        <label htmlFor="night">Cantidad de night</label>
+        <input
+        value={night} 
+        onChange={handleNight}
+        placeholder="Introduce la cantidad de night"/>
+      </div>
+      <CosteHotel night={night}/>
+      <CosteAlquiler night={night} />
+      <ButtonModule/>
+      <IconExample/>
     </div>
+  
   );
 }
-const styles = {
-  wrapper: {
-    padding: "20px",
-    textAlign: "center",
-  },
-  filterBtn: {
-    background: "#2ecc71",
-    color: "#fff",
-    border: "none",
-    padding: "10px 16px",
-    cursor: "pointer",
-    borderRadius: "8px",
-    fontSize: "14px",
-    marginBottom: "10px",
-  },
-};
+
 export default App;
