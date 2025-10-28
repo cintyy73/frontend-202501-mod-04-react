@@ -21,7 +21,8 @@ function App() {
     <div>
       <img src="https://img.freepik.com/foto-gratis/setter-irlandes_1398-4793.jpg?semt=ais_hybrid&w=740&q=80" alt="dog" />
 
-      {/* <img src="src/assets/dog.png"/>  */}
+      <img src="src/assets/dog.png"/> 
+
       <img src={dog}/>
         <h1 className="prueba">Calculadora de costo de viaje</h1>
       <div>
