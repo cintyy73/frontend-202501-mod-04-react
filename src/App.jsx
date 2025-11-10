@@ -1,43 +1,41 @@
 import { useState } from "react";
-import './app.css'
-import CosteHotel from "./components/CosteHotel";
-import CosteAlquiler from "./components/CosteAlquiler";
-import ButtonModule from "./buttons/ButtonModule";
-import Icon from "./Icon";
-import IconExample from "./Icon";
+import "./app.css";
+import ObjSongForm from "./components/ObjSongForm.jsx";
+import SongList from "./components/SongList.jsx";
 
-import dog from './assets/dog.png'
+import { FaMusic } from "react-icons/fa";
 
 function App() {
+  const initialSongs = JSON.parse(localStorage.getItem("songs")) || [];
+  const [songs, setSongs] = useState(initialSongs);
 
-  const [night, setNight] = useState(0)
-  
-  const handleNight = (e) =>{
-    setNight(e.target.value)
-    console.log(night)
-  }
+  const addSong = (newSong) => {
+    let data = [...songs, newSong];
+    setSongs(data);
+    saveLocalStorage(data);
+    console.log(songs);
+  };
 
+  const onDelete = (index) => {
+    const songsUpdated = songs.filter((song, i) => i !== index);
+    setSongs(songsUpdated);
+  };
+
+  const saveLocalStorage = (data) => {
+    localStorage.setItem("songs", JSON.stringify(data));
+  };
   return (
-    <div>
-      <img src="https://img.freepik.com/foto-gratis/setter-irlandes_1398-4793.jpg?semt=ais_hybrid&w=740&q=80" alt="dog" />
-
-      <img src="src/assets/dog.png"/> 
-
-      <img src={dog}/>
-        <h1 className="prueba">Calculadora de costo de viaje</h1>
-      <div>
-        <label htmlFor="night">Cantidad de night</label>
-        <input
-        value={night} 
-        onChange={handleNight}
-        placeholder="Introduce la cantidad de night"/>
-      </div>
-      <CosteHotel night={night}/>
-      <CosteAlquiler night={night} />
-      <ButtonModule/>
-      <IconExample/>
+    <div className='app-container'>
+      <h1>
+        <FaMusic /> Mi play List
+      </h1>
+      <ObjSongForm addSong={addSong} />
+      {songs.length > 0 ? (
+        <SongList songs={songs} onDelete={onDelete} />
+      ) : (
+        <p>No hay canciones todavía 🎧</p>
+      )}
     </div>
-  
   );
 }
 
