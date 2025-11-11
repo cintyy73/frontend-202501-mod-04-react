@@ -1,0 +1,62 @@
+.lista-tareas-container {
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.lista-tareas-container h1 {
+  text-align: center;
+  color: #333;
+}
+
+.contador {
+  display: flex;
+  justify-content: space-around;
+  padding: 15px;
+  background-color: #fff;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.contador-completas {
+  color: #4caf50;
+}
+
+.contador-pendientes {
+  color: #ff9800;
+}
+
+.tareas-lista {
+  background-color: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.tarea-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.tarea-item:last-child {
+  border-bottom: none;
+}
+
+.tarea-checkbox {
+  cursor: pointer;
+}
+
+.tarea-nombre {
+  flex: 1;
+}
+
+.tarea-nombre.completada {
+  text-decoration: line-through;
+  color: #888;
+}

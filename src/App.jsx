@@ -1,40 +1,44 @@
 import { useState } from "react";
-import "./app.css";
-import ObjSongForm from "./components/ObjSongForm.jsx";
-import SongList from "./components/SongList.jsx";
-
-import { FaMusic } from "react-icons/fa";
-
+import Task from "./components/Task";
+import './components/tasks.css'
 function App() {
-  const initialSongs = JSON.parse(localStorage.getItem("songs")) || [];
-  const [songs, setSongs] = useState(initialSongs);
+  const [tasks, setTasks] = useState([
+    { id: 1, name: "Exercise", completed: true },
+    { id: 2, name: "Read a book", completed: false },
+    { id: 3, name: "Study React", completed: false },
+    { id: 4, name: "Go shopping", completed: false },
+    { id: 5, name: "Cook dinner", completed: true },
+  ]);
 
-  const addSong = (newSong) => {
-    let data = [...songs, newSong];
-    setSongs(data);
-    saveLocalStorage(data);
-    console.log(songs);
+  const toggleTask = (id) => {
+    setTasks(
+      tasks.map((task) =>
+        task.id === id ? { ...task, completed: !task.completed } : task
+      )
+    );
   };
 
-  const onDelete = (index) => {
-    const songsUpdated = songs.filter((song, i) => i !== index);
-    setSongs(songsUpdated);
-  };
-
-  const saveLocalStorage = (data) => {
-    localStorage.setItem("songs", JSON.stringify(data));
-  };
+  const completedTasks = tasks.filter(t=>t.completed).length
+  const pendingTasks = tasks.length - completedTasks
   return (
-    <div className='app-container'>
-      <h1>
-        <FaMusic /> Mi play List
-      </h1>
-      <ObjSongForm addSong={addSong} />
-      {songs.length > 0 ? (
-        <SongList songs={songs} onDelete={onDelete} />
-      ) : (
-        <p>No hay canciones todavía 🎧</p>
-      )}
+        <div className="lista-tareas-container">
+
+        <div className="contador">
+        <div>
+          <strong>Completed:</strong> <span className="contador-completas">{completedTasks}</span>
+        </div>
+        <div>
+          <strong>Pending:</strong> <span className="contador-pendientes">{pendingTasks}</span>
+        </div>
+        <div>
+          <strong>Total:</strong> {tasks.length}
+        </div>
+      </div>
+      <div className="tareas-lista">
+        {tasks.map((task) => (
+          <Task key={task.id} name={task.name} completed={task.completed} onToggle={()=> toggleTask(task.id)}/>
+        ))}
+      </div>
     </div>
   );
 }
