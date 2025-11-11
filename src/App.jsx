@@ -1,42 +1,58 @@
 import { useState } from "react";
-import Task from "./components/Task";
-import './components/tasks.css'
+import "./components/MiniEcommerce.css";
+import Product from "./components/Product";
+
 function App() {
-  const [tasks, setTasks] = useState([
-    { id: 1, name: "Exercise", completed: true },
-    { id: 2, name: "Read a book", completed: false },
-    { id: 3, name: "Study React", completed: false },
-    { id: 4, name: "Go shopping", completed: false },
-    { id: 5, name: "Cook dinner", completed: true },
+  const [products, setProducts] = useState([
+    { id: 1, nombre: "Laptop", precio: 1200000, stock: 5 },
+    { id: 2, nombre: "Mouse", precio: 25000, stock: 10 },
+    { id: 3, nombre: "Teclado", precio: 45000, stock: 6 },
+    { id: 4, nombre: "Monitor", precio: 300000, stock: 3 },
+    { id: 5, nombre: "Auriculares", precio: 80000, stock: 4 },
+    { id: 6, nombre: "Cámara Web", precio: 60000, stock: 2 },
+    { id: 7, nombre: "Impresora", precio: 200000, stock: 3 },
+    { id: 8, nombre: "Disco Externo", precio: 150000, stock: 5 },
   ]);
 
-  const toggleTask = (id) => {
-    setTasks(
-      tasks.map((task) =>
-        task.id === id ? { ...task, completed: !task.completed } : task
-      )
+  const [quantity, setQuantity] = useState(0);
+  const [total, setTotal] = useState(0);
+
+  const handleBuy = (id) => {
+    setProducts(
+      products.map((product) => {
+        if (product.id === id && product.stock > 0) {
+          setTotal((prev) => prev + product.precio);
+          setQuantity((prev) => prev + 1);
+          return { ...product, stock: product.stock - 1 };
+        }
+        return product;
+      })
     );
   };
 
-  const completedTasks = tasks.filter(t=>t.completed).length
-  const pendingTasks = tasks.length - completedTasks
   return (
-        <div className="lista-tareas-container">
-
-        <div className="contador">
-        <div>
-          <strong>Completed:</strong> <span className="contador-completas">{completedTasks}</span>
+    <div className="mini-ecommerce-container">
+      <h1>Mini E-Commerce</h1>
+       <div className="purchase-summary">
+      <h2>Purchase Summary</h2>
+      <div className="summary-stats">
+        <div className="stat-item">
+          <span className="stat-label">Products purchased:</span>
+          <span className="stat-value">{quantity}</span>
         </div>
-        <div>
-          <strong>Pending:</strong> <span className="contador-pendientes">{pendingTasks}</span>
-        </div>
-        <div>
-          <strong>Total:</strong> {tasks.length}
+        <div className="stat-item">
+          <span className="stat-label">Total spent:</span>
+          <span className="stat-value total-amount">${total}</span>
         </div>
       </div>
-      <div className="tareas-lista">
-        {tasks.map((task) => (
-          <Task key={task.id} name={task.name} completed={task.completed} onToggle={()=> toggleTask(task.id)}/>
+    </div>
+      <div className="products-grid">
+        {products.map((product) => (
+          <Product
+            key={product.id}
+            product={product}
+            addToCart={() => handleBuy(product.id)}
+          />
         ))}
       </div>
     </div>
