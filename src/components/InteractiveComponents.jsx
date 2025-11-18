@@ -1,269 +1,187 @@
 import {
   Box,
-  Text,
-  Heading,
-  VStack,
-  HStack,
   Button,
+  useDisclosure,
   Modal,
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  ModalFooter,
-  ModalBody,
   ModalCloseButton,
-  useDisclosure,
-  Drawer,
-  DrawerBody,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerOverlay,
-  DrawerContent,
-  DrawerCloseButton,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverHeader,
-  PopoverBody,
-  PopoverFooter,
-  PopoverArrow,
-  PopoverCloseButton,
+  ModalBody,
+  ModalFooter,
+  Text,
+  VStack,
+  HStack,
+  useColorMode,
+  Icon,
   Tooltip,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  MenuItemOption,
-  MenuGroup,
-  MenuOptionGroup,
-  MenuDivider,
-  IconButton
-} from '@chakra-ui/react'
-import { useState } from 'react'
-import { ChevronDownIcon, HamburgerIcon } from '@chakra-ui/icons'
+  Spinner,
+  Progress,
+  Divider,
+  Tag,
+  TagLabel,
+  TagCloseButton,
+  Wrap,
+  WrapItem,
+} from '@chakra-ui/react';
+import { useState } from 'react';
+import { FaSun, FaMoon, FaInfoCircle, FaTrash } from 'react-icons/fa';
 
 const InteractiveComponents = () => {
-  const { isOpen: isModalOpen, onOpen: onModalOpen, onClose: onModalClose } = useDisclosure()
-  const { isOpen: isDrawerOpen, onOpen: onDrawerOpen, onClose: onDrawerClose } = useDisclosure()
-  const [selectedOption, setSelectedOption] = useState('option1')
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { colorMode, toggleColorMode } = useColorMode();
+  const [loading, setLoading] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [tags, setTags] = useState(['React', 'Chakra UI', 'JavaScript', 'Frontend']);
+
+  const handleLoadingDemo = () => {
+    setLoading(true);
+    setProgress(0);
+    
+    const interval = setInterval(() => {
+      setProgress(prev => {
+        if (prev >= 100) {
+          clearInterval(interval);
+          setLoading(false);
+          return 0;
+        }
+        return prev + 10;
+      });
+    }, 200);
+  };
+
+  const removeTag = (tagToRemove) => {
+    setTags(tags.filter(tag => tag !== tagToRemove));
+  };
 
   return (
-    <Box p={6}>
-      <Heading size="lg" mb={6} color="purple.600">
-        🎯 Componentes Interactivos
-      </Heading>
-
+    <Box p={6} maxW="xl" mx="auto">
       <VStack spacing={6} align="stretch">
-        {/* Modales y Drawers */}
-        <Box p={4} bg="white" borderRadius="md" shadow="sm">
-          <Heading size="md" mb={3}>🪟 Modales y Drawers</Heading>
-          <HStack spacing={3}>
-            <Button colorScheme="blue" onClick={onModalOpen}>
-              Abrir Modal
-            </Button>
-            <Button colorScheme="green" onClick={onDrawerOpen}>
-              Abrir Drawer
-            </Button>
-          </HStack>
+        
+        {/* Modal Example */}
+        <Box>
+          <Text fontSize="lg" fontWeight="bold" mb={2}>Modal (Ventana emergente)</Text>
+          <Button onClick={onOpen} colorScheme="purple">
+            Abrir Modal
+          </Button>
 
-          {/* Modal */}
-          <Modal isOpen={isModalOpen} onClose={onModalClose}>
+          <Modal isOpen={isOpen} onClose={onClose} isCentered>
             <ModalOverlay />
             <ModalContent>
-              <ModalHeader>¡Bienvenida a Chakra UI! 🎉</ModalHeader>
+              <ModalHeader>¡Ejemplo de Modal!</ModalHeader>
               <ModalCloseButton />
               <ModalBody>
                 <Text>
-                  Este es un ejemplo de modal en Chakra UI. Los modales son perfectos para 
-                  mostrar información importante o formularios que requieren la atención 
-                  completa del usuario.
-                </Text>
-                <Text mt={3} color="gray.600">
-                  💡 <strong>Tip:</strong> Puedes cerrar este modal presionando Escape 
-                  o haciendo clic fuera de él.
+                  Los modales son útiles para mostrar información importante
+                  o formularios sin salir de la página actual.
                 </Text>
               </ModalBody>
               <ModalFooter>
-                <Button colorScheme="blue" mr={3} onClick={onModalClose}>
-                  ¡Entendido!
-                </Button>
-                <Button variant="ghost" onClick={onModalClose}>
+                <Button colorScheme="blue" mr={3} onClick={onClose}>
                   Cerrar
                 </Button>
+                <Button variant="ghost">Acción secundaria</Button>
               </ModalFooter>
             </ModalContent>
           </Modal>
-
-          {/* Drawer */}
-          <Drawer isOpen={isDrawerOpen} placement="right" onClose={onDrawerClose}>
-            <DrawerOverlay />
-            <DrawerContent>
-              <DrawerCloseButton />
-              <DrawerHeader>Menú de Navegación</DrawerHeader>
-              <DrawerBody>
-                <VStack align="start" spacing={3}>
-                  <Text fontWeight="bold">📚 Secciones del Curso</Text>
-                  <Button variant="ghost" justifyContent="start" w="full">
-                    Introducción a React
-                  </Button>
-                  <Button variant="ghost" justifyContent="start" w="full">
-                    Componentes y Props
-                  </Button>
-                  <Button variant="ghost" justifyContent="start" w="full">
-                    Estado y Hooks
-                  </Button>
-                  <Button variant="ghost" justifyContent="start" w="full" bg="purple.50">
-                    Chakra UI (actual)
-                  </Button>
-                  <Button variant="ghost" justifyContent="start" w="full">
-                    Proyecto Final
-                  </Button>
-                </VStack>
-              </DrawerBody>
-              <DrawerFooter>
-                <Button variant="outline" mr={3} onClick={onDrawerClose}>
-                  Cancelar
-                </Button>
-                <Button colorScheme="blue">Ir a sección</Button>
-              </DrawerFooter>
-            </DrawerContent>
-          </Drawer>
         </Box>
 
-        {/* Tooltips */}
-        <Box p={4} bg="white" borderRadius="md" shadow="sm">
-          <Heading size="md" mb={3}>💬 Tooltips</Heading>
-          <HStack spacing={4}>
-            <Tooltip label="Este botón guarda tu trabajo" placement="top">
-              <Button colorScheme="green">
-                💾 Guardar
-              </Button>
-            </Tooltip>
-            
-            <Tooltip 
-              label="Tip: Usa Ctrl+Z para deshacer cambios" 
-              placement="bottom"
-              bg="purple.500"
-            >
-              <Button colorScheme="purple">
-                ↶ Deshacer
-              </Button>
-            </Tooltip>
-            
-            <Tooltip 
-              label="¡Cuidado! Esta acción no se puede deshacer" 
-              placement="right"
-              bg="red.500"
-            >
-              <Button colorScheme="red">
-                🗑️ Eliminar
-              </Button>
+        <Divider />
+
+        {/* Color Mode Toggle */}
+        <Box>
+          <Text fontSize="lg" fontWeight="bold" mb={2}>Modo oscuro/claro</Text>
+          <HStack>
+            <Button onClick={toggleColorMode} leftIcon={<Icon as={colorMode === 'light' ? FaMoon : FaSun} />}>
+              Cambiar a modo {colorMode === 'light' ? 'oscuro' : 'claro'}
+            </Button>
+            <Tooltip label="Cambia entre tema claro y oscuro" hasArrow>
+              <Box>
+                <Icon as={FaInfoCircle} color="gray.500" />
+              </Box>
             </Tooltip>
           </HStack>
         </Box>
 
-        {/* Popover */}
-        <Box p={4} bg="white" borderRadius="md" shadow="sm">
-          <Heading size="md" mb={3}>💭 Popover</Heading>
-          <Popover>
-            <PopoverTrigger>
-              <Button colorScheme="orange">
-                ¿Necesitas ayuda?
+        <Divider />
+
+        {/* Loading & Progress */}
+        <Box>
+          <Text fontSize="lg" fontWeight="bold" mb={2}>Loading y Progress</Text>
+          <VStack spacing={3} align="stretch">
+            <HStack>
+              <Button
+                onClick={handleLoadingDemo}
+                isLoading={loading}
+                loadingText="Cargando..."
+                colorScheme="teal"
+              >
+                Simular carga
               </Button>
-            </PopoverTrigger>
-            <PopoverContent>
-              <PopoverArrow />
-              <PopoverCloseButton />
-              <PopoverHeader fontWeight="bold">Centro de Ayuda 🆘</PopoverHeader>
-              <PopoverBody>
-                <VStack align="start" spacing={2}>
-                  <Text fontSize="sm">
-                    • Consulta la documentación oficial
-                  </Text>
-                  <Text fontSize="sm">
-                    • Únete a nuestro grupo de Discord
-                  </Text>
-                  <Text fontSize="sm">
-                    • Revisa ejemplos en CodePen
-                  </Text>
-                </VStack>
-              </PopoverBody>
-              <PopoverFooter>
-                <Button size="sm" colorScheme="blue">
-                  Ver más recursos
-                </Button>
-              </PopoverFooter>
-            </PopoverContent>
-          </Popover>
-        </Box>
-
-        {/* Menús */}
-        <Box p={4} bg="white" borderRadius="md" shadow="sm">
-          <Heading size="md" mb={3}>📋 Menús</Heading>
-          <HStack spacing={3}>
-            {/* Menú básico */}
-            <Menu>
-              <MenuButton as={Button} rightIcon={<ChevronDownIcon />} colorScheme="teal">
-                Acciones
-              </MenuButton>
-              <MenuList>
-                <MenuItem>📝 Crear nuevo proyecto</MenuItem>
-                <MenuItem>📂 Abrir proyecto</MenuItem>
-                <MenuItem>💾 Guardar como...</MenuItem>
-                <MenuDivider />
-                <MenuItem>⚙️ Configuración</MenuItem>
-              </MenuList>
-            </Menu>
-
-            {/* Menú con opciones */}
-            <Menu>
-              <MenuButton 
-                as={IconButton} 
-                icon={<HamburgerIcon />} 
-                colorScheme="purple"
-                aria-label="Opciones"
-              />
-              <MenuList>
-                <MenuGroup title="Tema">
-                  <MenuOptionGroup 
-                    value={selectedOption} 
-                    type="radio"
-                    onChange={setSelectedOption}
-                  >
-                    <MenuItemOption value="light">🌞 Claro</MenuItemOption>
-                    <MenuItemOption value="dark">🌙 Oscuro</MenuItemOption>
-                    <MenuItemOption value="auto">🔄 Automático</MenuItemOption>
-                  </MenuOptionGroup>
-                </MenuGroup>
-                <MenuDivider />
-                <MenuGroup title="Idioma">
-                  <MenuItem>🇪🇸 Español</MenuItem>
-                  <MenuItem>🇺🇸 English</MenuItem>
-                </MenuGroup>
-              </MenuList>
-            </Menu>
-          </HStack>
-          <Text mt={2} fontSize="sm" color="gray.600">
-            Opción seleccionada: <strong>{selectedOption}</strong>
-          </Text>
-        </Box>
-
-        {/* Tips para principiantes */}
-        <Box p={4} bg="blue.50" borderRadius="md" border="1px solid" borderColor="blue.200">
-          <Heading size="sm" mb={2} color="blue.700">
-            💡 Tips para Principiantes
-          </Heading>
-          <VStack align="start" spacing={1} fontSize="sm">
-            <Text>• Los modales bloquean la interacción con el resto de la página</Text>
-            <Text>• Los drawers son ideales para menús de navegación en móviles</Text>
-            <Text>• Los tooltips mejoran la experiencia del usuario</Text>
-            <Text>• Los popovers pueden mostrar información detallada sin cambiar de página</Text>
-            <Text>• Los menús organizan acciones y opciones de manera limpia</Text>
+              <Spinner size="md" color="teal.500" />
+            </HStack>
+            
+            {loading && (
+              <Box>
+                <Text fontSize="sm" mb={2}>Progreso: {progress}%</Text>
+                <Progress value={progress} colorScheme="teal" hasStripe isAnimated />
+              </Box>
+            )}
           </VStack>
         </Box>
+
+        <Divider />
+
+        {/* Tags */}
+        <Box>
+          <Text fontSize="lg" fontWeight="bold" mb={2}>Tags dinámicos</Text>
+          <Wrap>
+            {tags.map((tag, index) => (
+              <WrapItem key={index}>
+                <Tag
+                  size="lg"
+                  colorScheme="blue"
+                  borderRadius="full"
+                  variant="solid"
+                >
+                  <TagLabel>{tag}</TagLabel>
+                  <TagCloseButton onClick={() => removeTag(tag)} />
+                </Tag>
+              </WrapItem>
+            ))}
+          </Wrap>
+          {tags.length === 0 && (
+            <Text color="gray.500" fontStyle="italic">
+              No hay tags. ¡Prueba eliminar algunos!
+            </Text>
+          )}
+        </Box>
+
+        <Divider />
+
+        {/* Tooltips */}
+        <Box>
+          <Text fontSize="lg" fontWeight="bold" mb={2}>Tooltips informativos</Text>
+          <HStack spacing={4}>
+            <Tooltip label="¡Información útil!" hasArrow placement="top">
+              <Button>Hover aquí</Button>
+            </Tooltip>
+            
+            <Tooltip 
+              label="Los tooltips ayudan a explicar funcionalidades" 
+              hasArrow 
+              placement="right"
+              bg="purple.600"
+              color="white"
+            >
+              <Button colorScheme="purple">Tooltip personalizado</Button>
+            </Tooltip>
+          </HStack>
+        </Box>
+
       </VStack>
     </Box>
-  )
-}
+  );
+};
 
-export default InteractiveComponents
+export default InteractiveComponents;
