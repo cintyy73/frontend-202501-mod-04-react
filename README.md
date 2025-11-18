@@ -1,625 +1,516 @@
-# Clase 11: useEffect en Profundidad
+# 🎨 Ejemplos de Chakra UI v2 - Guía Completa
 
-## Objetivos de la clase
+Una aplicación de ejemplo con componentes de **Chakra UI v2** diseñada para estudiantes que están aprendiendo React y quieren dominar esta poderosa biblioteca de componentes.
 
-Al finalizar esta clase, las alumnas serán capaces de:
-- ✅ Usar `useEffect` con diferentes arrays de dependencias
-- ✅ Implementar funciones de limpieza (cleanup)
-- ✅ Realizar llamadas a APIs con manejo de estados
-- ✅ Usar `setInterval` con limpieza correcta
-- ✅ Cancelar peticiones HTTP con `AbortController`
+## 📋 Tabla de Contenidos
 
----
+- [¿Qué es Chakra UI?](#-qué-es-chakra-ui)
+- [Instalación](#-instalación)
+- [Configuración Inicial](#-configuración-inicial)
+- [Ejemplos de Uso](#-ejemplos-de-uso)
+- [Componentes Incluidos](#-componentes-incluidos)
+- [Buenas Prácticas](#-buenas-prácticas)
+- [Enlaces Útiles](#-enlaces-útiles)
+- [Recursos Adicionales](#-recursos-adicionales)
 
-## 📚 Teoría Rápida
+## 🌟 ¿Qué es Chakra UI?
 
-### ¿Qué es useEffect?
+**Chakra UI** es una biblioteca de componentes para React que te permite crear interfaces de usuario modernas, accesibles y responsive de manera rápida y sencilla. Es perfecta para principiantes porque:
 
-`useEffect` es un Hook que nos permite ejecutar código cuando:
-1. El componente se monta (primera vez que aparece)
-2. El componente se actualiza (cuando cambia alguna dependencia)
-3. El componente se desmonta (cuando desaparece)
+- ✅ **No necesitas escribir CSS** - Todo se hace con props
+- ✅ **Componentes accesibles** por defecto
+- ✅ **Responsive design** automático
+- ✅ **Sistema de diseño consistente**
+- ✅ **Fácil personalización**
 
-### Sintaxis básica
+## 🚀 Instalación
 
-```javascript
-useEffect(() => {
-  // Código del efecto
-  
-  return () => {
-    // Código de limpieza (opcional)
-  };
-}, [dependencias]); // Array de dependencias
+### Paso 1: Crear un proyecto de React (si no lo tienes)
+
+```bash
+# Con Vite (recomendado - más rápido)
+npm create vite@latest mi-proyecto-chakra -- --template react
+cd mi-proyecto-chakra
+npm install
+
+# O con Create React App
+npx create-react-app mi-proyecto-chakra
+cd mi-proyecto-chakra
 ```
 
-### Tipos de dependencias
+### Paso 2: Instalar Chakra UI y sus dependencias
 
-| Array de dependencias | Cuándo se ejecuta |
-|----------------------|-------------------|
-| `[]` (vacío) | Solo al montar el componente |
-| `[count, name]` | Al montar + cuando count o name cambien |
-| Sin array | En cada render (¡cuidado!) |
+```bash
+# Con npm
+npm install @chakra-ui/react@2 @emotion/react @emotion/styled framer-motion
 
----
+# Con yarn
+yarn add @chakra-ui/react@2 @emotion/react @emotion/styled framer-motion
 
-## 🎯 Actividad 1: Temporizador con setInterval
-
-### Objetivo
-Crear un reloj/contador que use `setInterval` con limpieza correcta.
-
-### Paso a paso
-
-#### Paso 1: Crear el archivo
-Crear `ejemplos/src/clase-11/TimerExample.jsx`
-
-#### Paso 2: Estructura básica
-```javascript
-import { useState, useEffect } from 'react';
-
-function TimerExample() {
-  const [seconds, setSeconds] = useState(0);
-  
-  return (
-    <div>
-      <h2>Temporizador</h2>
-      <p>Segundos: {seconds}</p>
-    </div>
-  );
-}
-
-export default TimerExample;
+# Con pnpm
+pnpm add @chakra-ui/react@2 @emotion/react @emotion/styled framer-motion
 ```
 
-#### Paso 3: Agregar useEffect con setInterval
-```javascript
-useEffect(() => {
-  // 1️⃣ CREACIÓN: Este código se ejecuta al montar el componente
-  console.log('🟢 Componente montado - Iniciando timer');
-  
-  // setInterval ejecuta una función cada X milisegundos
-  const intervalId = setInterval(() => {
-    // Usar función en setState para obtener el valor actual
-    setSeconds(prevSeconds => prevSeconds + 1);
-  }, 1000); // 1000ms = 1 segundo
-  
-  // 2️⃣ LIMPIEZA: Esta función se ejecuta al desmontar
-  return () => {
-    console.log('🔴 Componente desmontado - Limpiando timer');
-    // ⚠️ IMPORTANTE: Siempre limpiar intervalos para evitar memory leaks
-    clearInterval(intervalId);
-  };
-}, []); // Array vacío = solo se ejecuta una vez al montar
+### Paso 3: Instalar iconos (opcional pero recomendado)
+
+```bash
+# Con npm
+npm install @chakra-ui/icons
+
+# Con yarn
+yarn add @chakra-ui/icons
 ```
 
-#### Paso 4: Agregar botones de control
-```javascript
-const [isRunning, setIsRunning] = useState(true);
+## ⚙️ Configuración Inicial
 
-// Modificar useEffect para que respete isRunning
-useEffect(() => {
-  if (!isRunning) return; // Si está pausado, no hacer nada
-  
-  console.log('▶️ Timer iniciado');
-  const intervalId = setInterval(() => {
-    setSeconds(prev => prev + 1);
-  }, 1000);
-  
-  return () => {
-    console.log('⏸️ Timer limpiado');
-    clearInterval(intervalId);
-  };
-}, [isRunning]); // Ahora depende de isRunning
+### 1. Configurar el ChakraProvider
 
-// En el JSX:
-<button onClick={() => setIsRunning(!isRunning)}>
-  {isRunning ? 'Pausar' : 'Reanudar'}
-</button>
-<button onClick={() => { setSeconds(0); setIsRunning(false); }}>
-  Reiniciar
-</button>
-```
+Edita tu archivo `src/main.jsx`
 
-### Conceptos clave
-- ✅ `setInterval` necesita **siempre** un `clearInterval` en el cleanup
-- ✅ Usar función en `setState` cuando actualizas basándote en el valor anterior
-- ✅ El cleanup se ejecuta antes de que el efecto se vuelva a ejecutar
-- ✅ Guardar el ID del intervalo para poder limpiarlo después
+```jsx
+import { createRoot } from "react-dom/client";
+import App from "./App.jsx";
+import { ChakraProvider } from "@chakra-ui/react";
 
----
-
-## 🎯 Actividad 2: Contador con efecto dependiente
-
-### Objetivo
-Aprender a usar el array de dependencias para que el efecto se ejecute cuando cambia el estado.
-
-### Paso a paso
-
-#### Paso 1: Crear el archivo
-Crear `ejemplos/src/clase-11/CounterEffect.jsx`
-
-#### Paso 2: Estructura básica con estado
-```javascript
-import { useState, useEffect } from 'react';
-
-function CounterEffect() {
-  // Estado inicial del contador
-  const [count, setCount] = useState(0);
-  
-  return (
-    <div>
-      <h2>Contador: {count}</h2>
-      <button onClick={() => setCount(count + 1)}>
-        Incrementar
-      </button>
-    </div>
-  );
-}
-
-export default CounterEffect;
-```
-
-#### Paso 3: Agregar useEffect que observe count
-```javascript
-useEffect(() => {
-  // 📊 EFECTO: Se ejecuta cuando 'count' cambia
-  console.log(`📈 El contador cambió: ${count}`);
-  
-  // Ejemplo: Cambiar el título de la página
-  document.title = `Contador: ${count}`;
-  
-  // 🧹 CLEANUP: Se ejecuta ANTES del próximo efecto
-  return () => {
-    console.log(`🧹 Limpieza antes del próximo render (count era: ${count})`);
-  };
-}, [count]); // ⚠️ IMPORTANTE: count en el array de dependencias
-```
-
-#### Paso 4: Entender el flujo de ejecución
-```javascript
-// Flujo cuando haces click en el botón:
-// 1. count cambia de 0 a 1
-// 2. Se ejecuta el cleanup del efecto anterior: "Limpieza... (count era: 0)"
-// 3. React actualiza el DOM
-// 4. Se ejecuta el nuevo efecto: "El contador cambió: 1"
-// 5. document.title se actualiza a "Contador: 1"
-```
-
-#### Paso 5: Agregar más lógica al efecto
-```javascript
-useEffect(() => {
-  console.log(`📈 El contador cambió: ${count}`);
-  document.title = `Contador: ${count}`;
-  
-  // Ejemplo: Mostrar alerta si llega a 10
-  if (count === 10) {
-    alert('¡Llegaste a 10!');
-  }
-  
-  // Ejemplo: Cambiar color del fondo según el número
-  if (count % 2 === 0) {
-    document.body.style.backgroundColor = '#f0f0f0';
-  } else {
-    document.body.style.backgroundColor = '#ffffff';
-  }
-  
-  return () => {
-    console.log(`🧹 Limpieza antes del próximo render (count era: ${count})`);
-    // Limpiar estilos
-    document.body.style.backgroundColor = '';
-  };
-}, [count]);
-```
-
-### Conceptos clave
-- ✅ El efecto se ejecuta **después** del render
-- ✅ El cleanup se ejecuta **antes** del próximo efecto
-- ✅ Si pones `count` en las dependencias, el efecto se ejecuta cada vez que `count` cambia
-- ✅ El cleanup es útil para deshacer cambios (estilos, suscripciones, etc.)
-
-### Diagrama de ejecución
-```
-Usuario hace click → count: 0 → 1
-                      ↓
-          1. Cleanup anterior (count era 0)
-                      ↓
-          2. React actualiza el DOM
-                      ↓
-          3. Nuevo efecto (count es 1)
-                      ↓
-          4. Se guarda el cleanup para la próxima vez
-```
-
----
-
-## 🎯 Actividad 3: Consulta a una API con useEffect
-
-### Objetivo
-Hacer una petición HTTP a una API y manejar estados de carga, error y éxito.
-
-### Paso a paso
-
-#### Paso 1: Crear el archivo
-Crear `ejemplos/src/clase-11/UsersList.jsx`
-
-#### Paso 2: Estructura con estados múltiples
-```javascript
-import { useState, useEffect } from 'react';
-
-function UsersList() {
-  // 📦 ESTADOS: Necesitamos 3 estados para manejar la petición
-  const [users, setUsers] = useState([]);        // Datos de la API
-  const [loading, setLoading] = useState(true);   // ¿Está cargando?
-  const [error, setError] = useState(null);       // ¿Hubo error?
-  
-  return (
-    <div>
-      <h2>Lista de Usuarios</h2>
-      {/* Aquí mostraremos los usuarios */}
-    </div>
-  );
-}
-
-export default UsersList;
-```
-
-#### Paso 3: Agregar useEffect con fetch
-```javascript
-useEffect(() => {
-  // 🌐 PETICIÓN HTTP: Se ejecuta al montar el componente
-  console.log('🌐 Iniciando petición a la API...');
-  
-  // Función async dentro del useEffect
-  const fetchUsers = async () => {
-    try {
-      // 1️⃣ Hacer la petición
-      const response = await fetch('https://jsonplaceholder.typicode.com/users');
-      
-      // 2️⃣ Verificar si fue exitosa
-      if (!response.ok) {
-        throw new Error('Error en la petición');
-      }
-      
-      // 3️⃣ Convertir la respuesta a JSON
-      const data = await response.json();
-      
-      // 4️⃣ Guardar los datos en el estado
-      console.log('✅ Datos recibidos:', data);
-      setUsers(data);
-      setLoading(false);
-      
-    } catch (err) {
-      // 5️⃣ Manejar errores
-      console.error('❌ Error:', err);
-      setError(err.message);
-      setLoading(false);
-    }
-  };
-  
-  fetchUsers();
-  
-}, []); // Array vacío = solo al montar
-```
-
-#### Paso 4: Implementar AbortController para cleanup
-```javascript
-useEffect(() => {
-  console.log('🌐 Iniciando petición a la API...');
-  
-  // 🛑 AbortController: Permite cancelar la petición
-  const abortController = new AbortController();
-  const signal = abortController.signal;
-  
-  const fetchUsers = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      
-      // Pasar el signal al fetch
-      const response = await fetch(
-        'https://jsonplaceholder.typicode.com/users',
-        { signal } // 👈 Esto permite cancelar la petición
-      );
-      
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      
-      const data = await response.json();
-      console.log('✅ Datos recibidos:', data.length, 'usuarios');
-      setUsers(data);
-      
-    } catch (err) {
-      // Si fue cancelada, no mostrar error
-      if (err.name === 'AbortError') {
-        console.log('🛑 Petición cancelada');
-      } else {
-        console.error('❌ Error:', err);
-        setError(err.message);
-      }
-    } finally {
-      // Siempre ejecutar esto al final
-      setLoading(false);
-    }
-  };
-  
-  fetchUsers();
-  
-  // 🧹 CLEANUP: Cancelar petición si el componente se desmonta
-  return () => {
-    console.log('🧹 Componente desmontado - Cancelando petición');
-    abortController.abort();
-  };
-}, []);
-```
-
-#### Paso 5: Renderizado condicional según el estado
-```javascript
-return (
-  <div className="users-container">
-    <h2>Lista de Usuarios</h2>
-    
-    {/* 🔄 LOADING: Mostrar mientras carga */}
-    {loading && (
-      <p className="loading">⏳ Cargando usuarios...</p>
-    )}
-    
-    {/* ❌ ERROR: Mostrar si hubo error */}
-    {error && (
-      <div className="error">
-        <p>❌ Error al cargar usuarios</p>
-        <p>{error}</p>
-      </div>
-    )}
-    
-    {/* ✅ SUCCESS: Mostrar los usuarios */}
-    {!loading && !error && (
-      <ul className="users-list">
-        {users.map(user => (
-          <li key={user.id}>
-            <strong>{user.name}</strong>
-            <br />
-            📧 {user.email}
-            <br />
-            🏢 {user.company.name}
-          </li>
-        ))}
-      </ul>
-    )}
-  </div>
+createRoot(document.getElementById("root")).render(
+  <ChakraProvider>
+    <App />
+  </ChakraProvider>
 );
 ```
 
-#### Paso 6: Agregar estilos (opcional)
-Crear `ejemplos/src/clase-11/UsersList.css`:
-```css
-.users-container {
-  max-width: 600px;
-  margin: 20px auto;
-  padding: 20px;
-}
+### 2. Tu primer componente con Chakra UI
 
-.loading {
-  text-align: center;
-  font-size: 1.2em;
-  color: #666;
-}
+Edita `src/App.jsx`:
 
-.error {
-  background-color: #fee;
-  border: 1px solid #fcc;
-  padding: 15px;
-  border-radius: 5px;
-  color: #c00;
-}
+```jsx
+import { 
+  Box, 
+  Heading, 
+  Text, 
+  Button, 
+  VStack 
+} from "@chakra-ui/react";
 
-.users-list {
-  list-style: none;
-  padding: 0;
-}
-
-.users-list li {
-  background: #f9f9f9;
-  margin: 10px 0;
-  padding: 15px;
-  border-radius: 8px;
-  border-left: 4px solid #4CAF50;
-}
-
-.users-list li:hover {
-  background: #f0f0f0;
-  transform: translateX(5px);
-  transition: all 0.3s;
-}
-```
-
-### Conceptos clave
-- ✅ Usar 3 estados: `data`, `loading`, `error`
-- ✅ `AbortController` permite cancelar peticiones HTTP
-- ✅ El cleanup evita errores si el componente se desmonta antes de que termine la petición
-- ✅ Renderizado condicional según el estado
-- ✅ `try-catch-finally` para manejar errores
-
-### Diagrama de estados
-```
-                    INICIO
-                      ↓
-              loading = true
-                      ↓
-              Hacer fetch()
-                      ↓
-            ¿Éxito o error?
-           ↙              ↘
-    ✅ ÉXITO           ❌ ERROR
-    setUsers(data)     setError(msg)
-    loading = false    loading = false
-```
-
----
-
-## 🎨 Paso 7: Integrar todo en App.jsx
-
-Crear `ejemplos/src/clase-11/App11.jsx`:
-
-```javascript
-import { useState } from 'react';
-import TimerExample from './TimerExample';
-import CounterEffect from './CounterEffect';
-import UsersList from './UsersList';
-import './clase-11.css';
-
-function App11() {
-  const [activeActivity, setActiveActivity] = useState('timer');
-
+function App() {
   return (
-    <div className="app-container">
-      <h1>Clase 11: useEffect en Profundidad</h1>
-      
-      {/* Navegación */}
-      <nav className="nav-buttons">
-        <button 
-          onClick={() => setActiveActivity('timer')}
-          className={activeActivity === 'timer' ? 'active' : ''}
-        >
-          ⏱️ Temporizador
-        </button>
-        <button 
-          onClick={() => setActiveActivity('counter')}
-          className={activeActivity === 'counter' ? 'active' : ''}
-        >
-          🔢 Contador con Efecto
-        </button>
-        <button 
-          onClick={() => setActiveActivity('users')}
-          className={activeActivity === 'users' ? 'active' : ''}
-        >
-          👥 Lista de Usuarios
-        </button>
-      </nav>
-
-      {/* Contenido */}
-      <main className="content">
-        {activeActivity === 'timer' && <TimerExample />}
-        {activeActivity === 'counter' && <CounterEffect />}
-        {activeActivity === 'users' && <UsersList />}
-      </main>
-    </div>
+    <Box p={8}>
+      <VStack spacing={4}>
+        <Heading color="purple.600">
+          ¡Hola Chakra UI! 🎉
+        </Heading>
+        <Text fontSize="lg">
+          Mi primera aplicación con Chakra UI
+        </Text>
+        <Button colorScheme="blue" size="lg">
+          ¡Funciona! 🚀
+        </Button>
+      </VStack>
+    </Box>
   );
 }
 
-export default App11;
+export default App;
 ```
+
+### 3. Ejecutar la aplicación
+
+```bash
+# Con npm
+npm run dev
+
+# Con yarn
+yarn dev
+```
+
+Visita `http://localhost:5173` (Vite) 
+
+## 💡 Ejemplos de Uso
+
+### Ejemplo Básico: Layout con Box y Stack
+
+```jsx
+import { Box, VStack, HStack, Text } from "@chakra-ui/react";
+
+function Layout() {
+  return (
+    <Box p={6} bg="gray.50" borderRadius="md">
+      <VStack spacing={4}>
+        <Text fontSize="2xl" fontWeight="bold">
+          Layout Vertical
+        </Text>
+        <HStack spacing={6}>
+          <Box bg="blue.500" color="white" p={4} borderRadius="md">
+            Caja 1
+          </Box>
+          <Box bg="green.500" color="white" p={4} borderRadius="md">
+            Caja 2
+          </Box>
+        </HStack>
+      </VStack>
+    </Box>
+  );
+}
+```
+
+### Ejemplo de Formulario
+
+```jsx
+import {
+  FormControl,
+  FormLabel,
+  Input,
+  Button,
+  VStack,
+  useToast
+} from "@chakra-ui/react";
+import { useState } from "react";
+
+function MyForm() {
+  const [name, setName] = useState("");
+  const toast = useToast();
+
+  const handleSubmit = () => {
+    toast({
+      title: "¡Formulario enviado!",
+      description: `Hola ${name}`,
+      status: "success",
+      duration: 3000,
+    });
+  };
+
+  return (
+    <VStack spacing={4} maxW="400px">
+      <FormControl>
+        <FormLabel>Tu nombre</FormLabel>
+        <Input 
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="Escribe tu nombre"
+        />
+      </FormControl>
+      <Button colorScheme="blue" onClick={handleSubmit}>
+        Enviar
+      </Button>
+    </VStack>
+  );
+}
+```
+
+### Ejemplo de Modal
+
+```jsx
+import {
+  Button,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure
+} from "@chakra-ui/react";
+
+function MyModal() {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  return (
+    <>
+      <Button onClick={onOpen} colorScheme="purple">
+        Abrir Modal
+      </Button>
+      
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Mi Modal</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            ¡Este es el contenido del modal! 🎉
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+    </>
+  );
+}
+```
+
+## 🧩 Componentes Incluidos
+
+Esta aplicación incluye ejemplos de:
+
+### Layout y Contenedores
+- **[Box](https://chakra-ui.com/docs/components/box)** - Contenedor básico (como div)
+- **[Stack](https://chakra-ui.com/docs/components/stack)** - VStack, HStack para layouts
+- **[Grid](https://chakra-ui.com/docs/components/grid)** - Sistema de grillas
+- **[Container](https://chakra-ui.com/docs/components/container)** - Contenedor responsive
+
+### Tipografía
+- **[Heading](https://chakra-ui.com/docs/components/heading)** - Títulos y subtítulos
+- **[Text](https://chakra-ui.com/docs/components/text)** - Texto con estilos
+
+### Formularios
+- **[Input](https://chakra-ui.com/docs/components/input)** - Campos de entrada
+- **[Select](https://chakra-ui.com/docs/components/select)** - Listas desplegables
+- **[Checkbox](https://chakra-ui.com/docs/components/checkbox)** - Casillas de verificación
+- **[Switch](https://chakra-ui.com/docs/components/switch)** - Interruptores
+- **[Slider](https://chakra-ui.com/docs/components/slider)** - Controles deslizantes
+- **[FormControl](https://chakra-ui.com/docs/components/form-control)** - Contenedor de formularios
+
+### Botones y Navegación
+- **[Button](https://chakra-ui.com/docs/components/button)** - Botones interactivos
+- **[IconButton](https://chakra-ui.com/docs/components/icon-button)** - Botones con iconos
+- **[Menu](https://chakra-ui.com/docs/components/menu)** - Menús desplegables
+- **[Tabs](https://chakra-ui.com/docs/components/tabs)** - Navegación por pestañas
+- **[Breadcrumb](https://chakra-ui.com/docs/components/breadcrumb)** - Navegación jerárquica
+
+### Feedback y Estados
+- **[Alert](https://chakra-ui.com/docs/components/alert)** - Mensajes de estado
+- **[Toast](https://chakra-ui.com/docs/components/toast)** - Notificaciones temporales
+- **[Progress](https://chakra-ui.com/docs/components/progress)** - Barras de progreso
+- **[Spinner](https://chakra-ui.com/docs/components/spinner)** - Indicadores de carga
+
+### Overlays
+- **[Modal](https://chakra-ui.com/docs/components/modal)** - Ventanas modales
+- **[Drawer](https://chakra-ui.com/docs/components/drawer)** - Paneles laterales
+- **[Popover](https://chakra-ui.com/docs/components/popover)** - Contenido emergente
+- **[Tooltip](https://chakra-ui.com/docs/components/tooltip)** - Información contextual
+
+### Mostrar Datos
+- **[Card](https://chakra-ui.com/docs/components/card)** - Tarjetas de contenido
+- **[Badge](https://chakra-ui.com/docs/components/badge)** - Etiquetas de estado
+- **[Tag](https://chakra-ui.com/docs/components/tag)** - Etiquetas removibles
+- **[Avatar](https://chakra-ui.com/docs/components/avatar)** - Imágenes de perfil
+- **[Accordion](https://chakra-ui.com/docs/components/accordion)** - Contenido plegable
+
+## ✨ Buenas Prácticas
+
+### 🎨 Sistema de Colores
+
+```jsx
+// ✅ Buena práctica - usar colores del tema
+<Button colorScheme="blue">Mi Botón</Button>
+<Box bg="gray.100" color="gray.800">Contenido</Box>
+
+// ❌ Evitar - colores hardcodeados
+<Box bg="#f0f0f0" color="#333">Contenido</Box>
+```
+
+**Colores disponibles:** `gray`, `red`, `orange`, `yellow`, `green`, `teal`, `blue`, `cyan`, `purple`, `pink`
+
+**Intensidades:** `50` (más claro) a `900` (más oscuro)
+
+### 📱 Responsive Design
+
+```jsx
+// ✅ Responsive con breakpoints
+<Box 
+  fontSize={{ base: "sm", md: "md", lg: "lg" }}
+  p={{ base: 4, md: 6, lg: 8 }}
+>
+  Contenido responsive
+</Box>
+
+// ✅ Stack responsive
+<Stack 
+  direction={{ base: "column", md: "row" }}
+  spacing={{ base: 4, md: 8 }}
+>
+  <Box>Item 1</Box>
+  <Box>Item 2</Box>
+</Stack>
+```
+
+**Breakpoints de Chakra:**
+- `base`: 0px (móvil)
+- `sm`: 480px
+- `md`: 768px (tablet)
+- `lg`: 992px (desktop)
+- `xl`: 1280px
+- `2xl`: 1536px
+
+### 🎯 Espaciado Consistente
+
+```jsx
+// ✅ Usar el sistema de espaciado
+<VStack spacing={6}>  // Espaciado uniforme
+  <Box p={4}>Item 1</Box>
+  <Box p={4}>Item 2</Box>
+</VStack>
+
+// ✅ Márgenes y padding sistemáticos
+<Box 
+  p={6}        // padding: 1.5rem
+  m={4}        // margin: 1rem  
+  px={8}       // padding-left y padding-right: 2rem
+  mt={12}      // margin-top: 3rem
+>
+```
+
+### 🔧 Composición de Componentes
+
+```jsx
+// ✅ Componentes reutilizables
+function ProfileCard({ name, role, avatar }) {
+  return (
+    <Box p={6} borderRadius="lg" bg="white" shadow="md">
+      <VStack spacing={4}>
+        <Avatar src={avatar} name={name} size="lg" />
+        <VStack spacing={1}>
+          <Heading size="md">{name}</Heading>
+          <Text color="gray.600">{role}</Text>
+        </VStack>
+      </VStack>
+    </Box>
+  );
+}
+
+// ✅ Uso del componente
+<ProfileCard 
+  name="María García" 
+  role="Frontend Developer" 
+  avatar="/avatar.jpg" 
+/>
+```
+
+### ⚡ Hooks de Chakra UI
+
+```jsx
+import { useColorMode, useDisclosure, useToast } from "@chakra-ui/react";
+
+function MyComponent() {
+  // Hook para modo oscuro/claro
+  const { colorMode, toggleColorMode } = useColorMode();
+  
+  // Hook para controlar modales/drawers
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  
+  // Hook para notificaciones
+  const toast = useToast();
+  
+  const showNotification = () => {
+    toast({
+      title: "¡Éxito!",
+      status: "success",
+      duration: 3000,
+    });
+  };
+  
+  return (
+    // Tu componente
+  );
+}
+```
+
+### 🎪 Accesibilidad
+
+```jsx
+// ✅ Usar FormControl para formularios
+<FormControl isRequired>
+  <FormLabel>Email</FormLabel>
+  <Input type="email" />
+  <FormHelperText>Nunca compartiremos tu email</FormHelperText>
+</FormControl>
+
+// ✅ Botones con aria-label
+<IconButton 
+  aria-label="Cerrar menú"
+  icon={<CloseIcon />}
+  onClick={handleClose}
+/>
+
+// ✅ Usar Heading con niveles correctos
+<Heading as="h1" size="2xl">Título Principal</Heading>
+<Heading as="h2" size="lg">Subtítulo</Heading>
+```
+
+## 🔗 Enlaces Útiles
+
+### 📚 Documentación Oficial
+- **[Chakra UI Docs](https://chakra-ui.com/)** - Documentación completa
+- **[Getting Started](https://chakra-ui.com/docs/getting-started)** - Guía de inicio
+- **[Components](https://chakra-ui.com/docs/components)** - Todos los componentes
+- **[Styling](https://chakra-ui.com/docs/styled-system)** - Sistema de estilos
+
+### 🎨 Diseño y Temas
+- **[Default Theme](https://chakra-ui.com/docs/theming/theme)** - Tema por defecto
+- **[Colors](https://chakra-ui.com/docs/theming/theme#colors)** - Paleta de colores
+- **[Customize Theme](https://chakra-ui.com/docs/theming/customize-theme)** - Personalizar tema
+- **[Dark Mode](https://chakra-ui.com/docs/styled-system/color-mode)** - Modo oscuro
+
+### 📱 Responsive Design
+- **[Responsive Styles](https://chakra-ui.com/docs/styled-system/responsive-styles)** - Diseño responsive
+- **[Breakpoints](https://chakra-ui.com/docs/theming/theme#breakpoints)** - Puntos de quiebre
+
+### 🧩 Componentes Específicos
+- **[Layout: Box](https://chakra-ui.com/docs/components/box)**
+- **[Layout: Stack](https://chakra-ui.com/docs/components/stack)**
+- **[Layout: Grid](https://chakra-ui.com/docs/components/grid)**
+- **[Form: Input](https://chakra-ui.com/docs/components/input)**
+- **[Form: Select](https://chakra-ui.com/docs/components/select)**
+- **[Form: Checkbox](https://chakra-ui.com/docs/components/checkbox)**
+- **[Button](https://chakra-ui.com/docs/components/button)**
+- **[Modal](https://chakra-ui.com/docs/components/modal)**
+- **[Alert](https://chakra-ui.com/docs/components/alert)**
+- **[Toast](https://chakra-ui.com/docs/components/toast)**
+- **[Card](https://chakra-ui.com/docs/components/card)**
+- **[Avatar](https://chakra-ui.com/docs/components/avatar)**
+- **[Badge](https://chakra-ui.com/docs/components/badge)**
+
+## 📖 Recursos Adicionales
+
+### 🎓 Tutoriales y Cursos
+- **[Chakra UI Course](https://egghead.io/courses/build-a-modern-user-interface-with-chakra-ui-fac68106)** - Curso en Egghead
+- **[YouTube Tutorials](https://www.youtube.com/results?search_query=chakra+ui+tutorial)** - Tutoriales en YouTube
+
+### 🛠️ Herramientas
+- **[Chakra Templates](https://chakra-templates.dev/)** - Plantillas gratuitas
+- **[Chakra UI Pro](https://pro.chakra-ui.com/)** - Componentes premium
+- **[Figma Kit](https://www.figma.com/community/file/971408767069651759)** - Kit de diseño para Figma
+
+### 🌐 Comunidad
+- **[GitHub](https://github.com/chakra-ui/chakra-ui)** - Repositorio oficial
+- **[Discord](https://discord.gg/chakra-ui)** - Comunidad en Discord
+- **[Twitter](https://twitter.com/chakra_ui)** - Noticias y actualizaciones
+
+## 🚀 Comandos para Ejecutar este Proyecto
+
+```bash
+# Clonar el proyecto (si está en un repositorio)
+git clone [URL_DEL_REPO]
+cd ejemplo-con-vite
+
+# Instalar dependencias
+npm install
+# o
+yarn install
+
+# Ejecutar en modo desarrollo
+npm run dev
+# o
+yarn dev
+
+# Crear build para producción
+npm run build
+# o
+yarn build
+```
+
+## 🎯 Próximos Pasos
+
+1. **Explora cada pestaña** de la aplicación para ver diferentes ejemplos
+2. **Modifica los componentes** para experimentar con diferentes props
+3. **Crea tus propios componentes** combinando los existentes
+4. **Practica el responsive design** probando en diferentes tamaños de pantalla
+5. **Personaliza el tema** con tus propios colores y estilos
 
 ---
 
-## 📝 Checklist de la clase
+## 🤝 ¿Necesitas Ayuda?
 
-### Al finalizar, verificar que las alumnas puedan:
+- Revisa la **[documentación oficial](https://chakra-ui.com/)**
+- Únete a la **[comunidad de Discord](https://discord.gg/chakra-ui)**
+- Busca en **[Stack Overflow](https://stackoverflow.com/questions/tagged/chakra-ui)**
+- Consulta **[GitHub Issues](https://github.com/chakra-ui/chakra-ui/issues)**
 
-**Actividad 1 - Temporizador:**
-- [ ] Usar `setInterval` dentro de `useEffect`
-- [ ] Implementar `clearInterval` en el cleanup
-- [ ] Usar función en `setState` (`prev => prev + 1`)
-- [ ] Entender por qué se necesita el cleanup
-
-**Actividad 2 - Contador:**
-- [ ] Agregar dependencias al array `[count]`
-- [ ] Ver en consola cuándo se ejecuta el efecto
-- [ ] Ver en consola cuándo se ejecuta el cleanup
-- [ ] Cambiar el título de la página con `document.title`
-
-**Actividad 3 - API:**
-- [ ] Manejar 3 estados: `loading`, `error`, `data`
-- [ ] Usar `async/await` dentro de `useEffect`
-- [ ] Implementar `AbortController` para cancelar peticiones
-- [ ] Renderizado condicional según el estado
-
----
-
-## 🎯 Ejercicios extra (si da tiempo)
-
-### 1. Timer con múltiples velocidades
-Modificar `TimerExample` para que tenga botones de velocidad: 1x, 2x, 0.5x
-
-### 2. Búsqueda de usuarios
-Modificar `UsersList` para agregar un input que filtre usuarios por nombre
-
-### 3. Contador que guarda en localStorage
-Modificar `CounterEffect` para que guarde el valor en `localStorage` y lo recupere al recargar
-
----
-
-## 🐛 Errores comunes y soluciones
-
-### Error 1: Memory leak con setInterval
-```javascript
-// ❌ MAL: No se limpia el intervalo
-useEffect(() => {
-  setInterval(() => {}, 1000);
-}, []);
-
-// ✅ BIEN: Se limpia en el cleanup
-useEffect(() => {
-  const id = setInterval(() => {}, 1000);
-  return () => clearInterval(id);
-}, []);
-```
-
-### Error 2: Actualizar estado sin función
-```javascript
-// ❌ MAL: El valor queda "congelado"
-setSeconds(seconds + 1);
-
-// ✅ BIEN: Usa el valor actual
-setSeconds(prev => prev + 1);
-```
-
-### Error 3: Fetch sin AbortController
-```javascript
-// ❌ MAL: No se puede cancelar
-useEffect(() => {
-  fetch(url).then(data => setState(data));
-}, []);
-
-// ✅ BIEN: Se puede cancelar
-useEffect(() => {
-  const controller = new AbortController();
-  fetch(url, { signal: controller.signal });
-  return () => controller.abort();
-}, []);
-```
-
-### Error 4: useEffect sin dependencias
-```javascript
-// ❌ MAL: Se ejecuta en cada render
-useEffect(() => {
-  console.log(count);
-});
-
-// ✅ BIEN: Se ejecuta solo cuando count cambia
-useEffect(() => {
-  console.log(count);
-}, [count]);
-```
-
----
-
-## 📚 Recursos adicionales
-
-- [Documentación oficial de useEffect](https://react.dev/reference/react/useEffect)
-- [Guía de cleanup functions](https://react.dev/learn/synchronizing-with-effects#step-3-add-cleanup-if-needed)
-- [AbortController en MDN](https://developer.mozilla.org/en-US/docs/Web/API/AbortController)
-- [JSON Placeholder API](https://jsonplaceholder.typicode.com/)
-
----
-
-## 🎓 Resumen de conceptos
-
-| Concepto | Explicación | Ejemplo |
-|----------|-------------|---------|
-| **useEffect** | Hook para efectos secundarios | `useEffect(() => {}, [])` |
-| **Dependencias** | Variables que triggean el efecto | `[count, name]` |
-| **Cleanup** | Limpieza antes de desmontar | `return () => clearInterval(id)` |
-| **setInterval** | Ejecuta código repetidamente | `setInterval(() => {}, 1000)` |
-| **clearInterval** | Cancela un intervalo | `clearInterval(id)` |
-| **AbortController** | Cancela peticiones HTTP | `controller.abort()` |
-| **async/await** | Manejo de promesas | `const data = await fetch()` |
+¡Happy coding! 🎉✨

@@ -180,6 +180,11 @@
     copy-to-clipboard "3.3.3"
     framesync "6.1.2"
 
+"@chakra-ui/icons@^2.2.4":
+  version "2.2.4"
+  resolved "https://registry.yarnpkg.com/@chakra-ui/icons/-/icons-2.2.4.tgz#fc3f59a7e377d6e4efdbe8ee0a3aec7f29a4ab32"
+  integrity sha512-l5QdBgwrAg3Sc2BRqtNkJpfuLw/pWRDwwT58J6c4PqQT6wzXxyNa8Q0PForu1ltB5qEiFb1kxr/F/HO1EwNa6g==
+
 "@chakra-ui/react@2":
   version "2.10.9"
   resolved "https://registry.yarnpkg.com/@chakra-ui/react/-/react-2.10.9.tgz#f268c83c435df09c96a8eafb066e76641057c24b"
@@ -924,6 +929,11 @@ caniuse-lite@^1.0.30001746:
   version "1.0.30001746"
   resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001746.tgz#199d20f04f5369825e00ff7067d45d5dfa03aee7"
   integrity sha512-eA7Ys/DGw+pnkWWSE/id29f2IcPHVoE8wxtvE5JdvD2V28VTDPy1yEeo11Guz0sJ4ZeGRcm3uaTcAqK1LXaphA==
+
+chakra-icons@^0.0.0:
+  version "0.0.0"
+  resolved "https://registry.yarnpkg.com/chakra-icons/-/chakra-icons-0.0.0.tgz#44d63e8de0d81272d1cc70b5a2fd4a0d0c9e6b16"
+  integrity sha512-Y40ErB3X1hFUBecEsGZBghlHys5IunGAQ3ZJAE09zP44rFPuJkX8AS2pMcD+i2JheJTikQSf5KNg/7mGN3Wlog==
 
 chalk@^4.0.0:
   version "4.1.2"
