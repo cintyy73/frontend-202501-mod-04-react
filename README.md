@@ -1,187 +1,293 @@
-# 🧠 REACT – REPASO CLASE 1
+# 🎯 Clase de Repaso React - Lista de Contactos
 
-## ✅ ¿Qué es React?
+## 📋 Objetivo de la Clase
+Repasar conceptos fundamentales de React creando una **Lista de Contactos** que prepare a las estudiantes para el TP final de Todo List.
 
-React es **una biblioteca de JavaScript** que permite crear interfaces de usuario mediante **componentes reutilizables**.
-
-### Ventajas principales:
-
-- ✅ Facilita la creación de interfaces interactivas.
-- ⚡ Usa el **Virtual DOM** para mejorar el rendimiento.
-- 🧩 Permite organizar el código en **componentes fáciles de mantener**.
-- 🌎 Es muy popular y tiene un gran ecosistema de herramientas y librerías.
-
----
-
-## 📚 Librería vs Framework
-
-| Característica | Librería | Framework |
-|----------------|----------|-----------|
-| Control        | El desarrollador elige cómo usarla | El framework dicta cómo estructurar el código |
-| Flexibilidad   | Alta     | Media/Baja |
-| Ejemplos       | React, Lodash | Angular, Vue |
-
----
-
-## 🧱 Virtual DOM
-
-El **DOM virtual** es una copia del DOM real que React usa en memoria.
-
-✅ React compara el DOM virtual con el real y **solo actualiza lo que cambió**, lo que mejora el rendimiento.
-
----
-
-## 🛠 Node.js y NPM
-
-| Herramienta | Descripción | Uso |
-|-------------|-------------|-----|
-| **Node.js** | Permite ejecutar JavaScript fuera del navegador | Necesario para usar React y herramientas de desarrollo |
-| **NPM (Node Package Manager)** | Gestor de paquetes que instala librerías como React o Vite | `npm install nombre-paquete` |
-
-También existen alternativas como **Yarn** o **PNPM**.
-
----
-
-## 🚀 Comandos para crear proyectos
-
-### 🔹 Con Create React App
-
+## 🏁 Instrucciones de Inicio
 ```bash
-npx create-react-app react-01
-cd react-01
-npm start   # Inicia en localhost:3000
-```
-
-### 🔹 Con Vite
-
-```bash
-npm create vite@latest
-# → elegir React
-# → elegir JavaScript
-cd mi-proyecto
 npm install
-npm run dev  # Inicia en localhost:5173
+# O si prefieres yarn:
+yarn install
+
+# Iniciar servidor de desarrollo
+npm run dev
+# O con yarn:
+yarn dev
 ```
 
-🔹 Extra:
+## 🎨 Estilos CSS Incluidos
+Se incluye un archivo `src/styles/ContactApp.css` con estilos profesionales que las alumnas pueden usar directamente:
 
-```bash
-ctrl + c  # Para detener
-code .    # Para abrir en Visual Studio Code
-```
+- ✅ **Clases CSS listas para usar**
+- ✅ **Diseño responsive** 
+- ✅ **Iconos con react-icons**
+- ✅ **Animaciones suaves**
+- ✅ **Estados visuales** (hover, focus, completed)
+
+**Para usar los estilos:** `import './styles/ContactApp.css'`
 
 ---
 
-## 📁 Estructura básica de un proyecto React
+## 🎓 Ejercicios Graduales (2 horas aprox.)
 
-```
-mi-proyecto/
-├─ public/       # Archivos estáticos (index.html)
-├─ src/          # Código de la aplicación
-│  ├─ components/ # Componentes reutilizables
-│  ├─ styles/     # Estilos CSS
-│  ├─ hooks/      # Lógica reutilizable
-│  └─ services/   # Funciones externas (APIs)
-├─ node_modules/  # Dependencias instaladas
-```
+### 📝 **Ejercicio 1: Estructura Básica y JSX** (20 min)
+**Conceptos:** JSX, componentes funcionales, estructura
+
+**Consigna:** Crear la estructura visual de una lista de contactos
+- Título de la aplicación "Mi Lista de Contactos"
+- Lista hardcodeada de 3 contactos con nombre y teléfono
+- Cada contacto debe mostrarse en una tarjeta simple
+
+**💡 Pista:** Usa JSX para estructurar y arrays hardcodeados para los datos
 
 ---
 
-## 🧩 Componentes en React
+### 📝 **Ejercicio 2: Componentes y Props** (25 min)
+**Conceptos:** Props, componentes reutilizables, map()
 
-Un componente es **una función que retorna JSX** (JavaScript + HTML).
+**Consigna:** Modularizar la aplicación
+- Crear componente `ContactCard` que reciba props (name, phone)
+- Crear componente `ContactList` que renderice múltiples contactos
+- Pasar datos como props desde App
+- Usar `.map()` para renderizar la lista
 
-```jsx
-function Welcome() {
-  return <h1>Hola</h1>;
+**⚠️ Recordar:** Cada elemento de la lista necesita una `key` única
+
+---
+
+### 📝 **Ejercicio 3: Estado con useState** (25 min)
+**Conceptos:** useState, inmutabilidad, eventos
+
+**Consigna:** Hacer la aplicación interactiva
+- Mover los contactos hardcodeados a un estado
+- Crear formulario para agregar nuevos contactos (nombre y teléfono)
+- Implementar función para agregar contactos
+- **Validación:** No permitir campos vacíos
+
+**💡 Pista:** Usa `useState` para el estado de contactos y para controlar los inputs
+
+---
+
+### 📝 **Ejercicio 4: useEffect y localStorage** (25 min)
+**Conceptos:** useEffect, localStorage, ciclo de vida
+
+**Consigna:** Persistir datos
+- Guardar contactos en localStorage cuando cambie el estado
+- Cargar contactos desde localStorage al iniciar la app
+- Usar `useEffect` para ambas acciones
+
+**⚠️ Importante:** Manejar casos cuando localStorage esté vacío
+
+---
+
+### 📝 **Ejercicio 5: Marcar como Contactado** (20 min)
+**Conceptos:** Actualización de estado, inmutabilidad, renderizado condicional
+
+**Consigna:** Agregar funcionalidad para tachar contactos
+- Conectar botón de toggle en cada ContactCard
+- Implementar función que cambie el estado `isCompleted`
+- Aplicar estilos condicionales (tachado, colores)
+- Agregar iconos con react-icons
+
+**💡 Pista:** Usar `map()` para actualizar solo el contacto específico
+
+---
+
+### 📝 **Ejercicio 6: Eliminar Contactos** (20 min)
+**Conceptos:** Filtrado de arrays, confirmaciones, inmutabilidad
+
+**Consigna:** Agregar funcionalidad de eliminar
+- Conectar botón eliminar de cada ContactCard
+- Implementar función que filtre el contacto eliminado
+- **Validación:** Confirmar antes de eliminar
+- Mostrar feedback al usuario
+
+**💡 Pista:** Usar `array.filter()` y `window.confirm()`
+
+---
+
+### 📝 **Ejercicio Bonus: Funcionalidades Avanzadas** (25 min)
+**Conceptos:** Filtrado en tiempo real, estadísticas
+
+**Consigna:** Completar la aplicación
+- Implementar buscador que filtre por nombre o teléfono
+- Mostrar contador de contactos
+- Mostrar mensaje cuando no hay resultados
+- Mejorar la interfaz visual
+
+---
+
+## 🧠 Conceptos Teóricos Clave
+
+### 🔧 **useState Hook**
+```javascript
+// ✅ Correcto - Inmutabilidad
+const [contacts, setContacts] = useState([]);
+setContacts([...contacts, newContact]);
+
+// ❌ Incorrecto - Mutación directa
+contacts.push(newContact);
+```
+
+### 🔄 **useEffect Hook**
+```javascript
+// Cargar datos al montar el componente
+useEffect(() => {
+  const savedContacts = localStorage.getItem('contacts');
+  if (savedContacts) {
+    setContacts(JSON.parse(savedContacts));
+  }
+}, []); // Array vacío = solo al montar
+
+// Guardar cuando cambie el estado
+useEffect(() => {
+  localStorage.setItem('contacts', JSON.stringify(contacts));
+}, [contacts]); // Se ejecuta cuando contacts cambie
+```
+
+### ✅ **Marcar como Contactado**
+```javascript
+const handleToggleComplete = (contactId) => {
+  // Actualizar solo el contacto específico
+  setContacts(contacts.map(contact => 
+    contact.id === contactId 
+      ? { ...contact, isCompleted: !contact.isCompleted }
+      : contact
+  ));
+};
+
+// En JSX - estilos condicionales
+<div className={`contact-card ${isCompleted ? 'completed' : ''}`}>
+  <h3 className={isCompleted ? 'completed' : ''}>{name}</h3>
+</div>
+```
+
+### 📱 **React Icons**
+```javascript
+// Importar iconos específicos
+import { FaPhone, FaTrash, FaCheck, FaTimes } from 'react-icons/fa';
+
+// Usar en JSX
+<FaPhone /> {phone}
+<button><FaTrash /> Eliminar</button>
+```
+
+### 🗑️ **Eliminar Contactos**
+```javascript
+const handleDeleteContact = (contactId) => {
+  // 1. Confirmar antes de eliminar
+  const confirmed = window.confirm('¿Seguro que quieres eliminar?');
+  if (!confirmed) return;
+
+  // 2. Filtrar todos excepto el que queremos eliminar
+  setContacts(contacts.filter(contact => contact.id !== contactId));
+  
+  // 3. Feedback al usuario
+  alert('✅ Contacto eliminado');
+};
+```
+
+### 🎯 **Props y Flujo de Datos**
+```javascript
+// Componente padre pasa datos al hijo
+<ContactCard name={contact.name} phone={contact.phone} />
+
+// Componente hijo recibe props
+function ContactCard({ name, phone }) {
+  return <div>{name} - {phone}</div>;
 }
 ```
 
-O con arrow function:
+### 📝 **Manejo de Formularios**
+```javascript
+const [formData, setFormData] = useState({ name: '', phone: '' });
 
-```jsx
-const Welcome = () => {
-  const name = "Sandra";
-  return (
-    <div>
-      <h1>Hola, {name}!</h1>
-    </div>
-  );
+const handleInputChange = (e) => {
+  setFormData({
+    ...formData,
+    [e.target.name]: e.target.value
+  });
 };
-
-export default Welcome;
 ```
 
 ---
 
-## 📦 Exportar e importar componentes
+## 🚨 Errores Comunes y Soluciones
 
-### ✅ Exportación por defecto
+### ❌ **Error: Missing key prop**
+```javascript
+// Problema
+{contacts.map(contact => <ContactCard />)}
 
-```jsx
-// Welcome.jsx
-const Welcome = () => <h1>¡Hola!</h1>;
-export default Welcome;
+// Solución
+{contacts.map(contact => <ContactCard key={contact.id} />)}
 ```
 
-```jsx
-// App.jsx
-import Welcome from './Welcome';
+### ❌ **Error: Cannot read properties of undefined**
+```javascript
+// Problema - no validar si hay datos
+localStorage.getItem('contacts').length
+
+// Solución - validar antes de usar
+const saved = localStorage.getItem('contacts');
+if (saved && saved.length > 0) { ... }
 ```
 
-### ✅ Exportación con nombre
+### ❌ **Error: Component re-renders infinitely**
+```javascript
+// Problema - useEffect sin dependencias controladas
+useEffect(() => {
+  setContacts(newData);
+});
 
-```jsx
-// Buttons.jsx
-export const PrimaryButton = () => <button>Primary</button>;
-export const SecondaryButton = () => <button>Secondary</button>;
-```
-
-```jsx
-import { PrimaryButton, SecondaryButton } from './Buttons';
-```
-
----
-
-## 🧱 JSX y sintaxis básica
-
-JSX permite escribir HTML dentro de JavaScript.
-
-### Reglas:
-
-- ❗Siempre debe devolver **un solo elemento contenedor**.
-- ✅ Todas las etiquetas deben **cerrarse** (`<img />`, `<input />`)
-- ✅ Para insertar JavaScript en JSX ➝ **usar llaves `{}`**
-
-```jsx
-const name = "Juan";
-return <h1>Hola, {name}!</h1>;
+// Solución - especificar dependencias
+useEffect(() => {
+  setContacts(newData);
+}, [dependencia]);
 ```
 
 ---
 
-## 🔗 React.Fragment (`<> </>`)
+## 🎯 Preparación para el TP Todo List
 
-Permite envolver elementos sin agregar un div extra al DOM:
+### Similitudes que practicamos:
+- ✅ Gestión de estado con useState
+- ✅ Persistencia con localStorage  
+- ✅ Formularios controlados con validaciones
+- ✅ Renderizado de listas dinámicas
+- ✅ useEffect para ciclo de vida
+- ✅ Modularización en componentes
+- ✅ Props y flujo de datos
 
-```jsx
-<>
-  <h1>Título</h1>
-  <p>Descripción</p>
-</>
+### Lo que aplicarán en el TP:
+- 📝 Reemplazar "contactos" por "tareas"
+- ✏️ Agregar funcionalidad de editar
+- ✔️ Agregar toggle de completado
+- 🎛️ Filtros por estado (todas/completadas/pendientes)
+- 🎨 Estilos más elaborados
+- 📱 Responsive design
+
+---
+
+## 🔧 Estructura Final Esperada
+```
+src/
+├── App.jsx
+├── components/
+│   ├── ContactList.jsx
+│   ├── ContactCard.jsx
+│   ├── ContactForm.jsx
+│   └── SearchBar.jsx (opcional)
+└── utils/
+    └── localStorage.js (opcional)
 ```
 
 ---
 
-## ✅ Resumen final
+## 💪 Desafíos Opcionales
+- Editar contactos existentes
+- Validar formato de teléfono
+- Ordenar contactos alfabéticamente
+- Agregar más campos (email, dirección)
 
-| Concepto | Descripción |
-|----------|-------------|
-| React | Biblioteca para crear interfaces reutilizables |
-| Virtual DOM | Representación en memoria del DOM para mejorar rendimiento |
-| Node + NPM | Herramientas necesarias para instalar y ejecutar proyectos |
-| Vite / CRA | Plantillas para crear proyectos rápidamente |
-| JSX | Sintaxis que mezcla HTML y JS |
-| Componentes | Bloques reutilizables en React |
-
----
+¡Mucho éxito en la clase! 🚀
