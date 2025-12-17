@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
-const UsersList = () => {
-  const [users, setUsers] = useState([]);
+export const useExample = () => { 
+    const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -26,7 +26,7 @@ const UsersList = () => {
         setUsers(data);
         console.log(response);
       } catch (err) {
-        console.log(error , err);
+        console.log(error, err);
       } finally {
         console.log("🏁 Finalizando petición");
         setLoading(false);
@@ -34,23 +34,6 @@ const UsersList = () => {
     };
 
     fetchUsers();
-  }, [error]);
-
-  return (
-    <div>
-      <p>Ejercicio 3</p>
-      {loading && <p className="loading">⏳ Cargando usuarios...</p>}
-      {!loading && <p>Nombre: {users[0].name} </p>}
-
-      {loading ? (
-        <p className="loading">⏳ Cargando usuarios... lorem200</p>
-      ) : (
-        <>
-          <p>Nombre: {users[0].name} </p>
-        </>
-      )}
-    </div>
-  );
+  }, [error]);  
+    return { users, loading};   
 };
-
-export default UsersList;
