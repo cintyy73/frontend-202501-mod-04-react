@@ -1,17 +1,16 @@
-import { Routes, Route, BrowserRouter } from "react-router-dom";
-import Navbar from "./pages/Navbar";
-import Home from "./pages/Home";
-import About from "./pages/About";
-import Users from "./pages/Users";
-import UserDetail from "./pages/UserDetail";
-import Products from "./pages/Products";
-import ProductDetail from "./pages/ProductDetail";
-import NotFound from "./pages/NotFound";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Navbar from "./Navbar";
+import Home from "./Home";
+import About from "./About";
+import Users from "./Users";
+import UserDetail from "./UserDetail";
+import Products from "./Products";
+import NotFound from "./NotFound";
+import ProductDetail from "./ProductDetail";
 
-export default function App() {
+export default function App18() {
   return (
-     <BrowserRouter>
-
+    <BrowserRouter>
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />

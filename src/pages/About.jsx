@@ -1,55 +1,55 @@
 /**
- * ℹ️ ABOUT - Página de información
+ * ℹ️ ABOUT - Ruta Estática Simple
  * 
  * Conceptos clave:
+ * - Ruta estática: siempre renderiza el mismo contenido
+ * - Definida en App.jsx como: <Route path="/about" element={<About />} />
+ * - No recibe parámetros ni query strings
  * 
- * 📌 NAVEGACIÓN HACIA ATRÁS:
- * - navigate('/'): Navega a una ruta específica
- * - navigate(-1): Vuelve a la página anterior (como el botón back del navegador)
- * 
- * 📌 CHAKRA UI - BADGE:
- * - Badge: Componente para mostrar etiquetas o tags
- * - colorScheme: Define el esquema de colores
- * - Útil para estados, categorías, notificaciones
- * 
- * 📌 ICONOS A LA IZQUIERDA:
- * - leftIcon: Icono a la izquierda del texto del botón
+ * Este es el tipo más básico de ruta:
+ * ✅ URL fija (/about)
+ * ✅ Contenido estático
+ * ✅ Sin datos dinámicos
  */
 
-import { Box, Heading, Text, Button, VStack, Badge } from '@chakra-ui/react';
-import { useNavigate } from 'react-router-dom';
-import { ArrowBackIcon } from '@chakra-ui/icons';
+import { Box, Heading, Text, List, ListItem, ListIcon } from "@chakra-ui/react";
+import { CheckCircleIcon } from "@chakra-ui/icons";
 
-const About = () => {
-  const navigate = useNavigate();
-
+export default function About() {
   return (
-    <Box p={8}>
-      <VStack spacing={6} align="stretch">
-        <Heading as="h1" size="2xl" color="purple.500">
-          ℹ️ About
-        </Heading>
-        
-        {/* Badge - Etiqueta destacada */}
-        <Badge colorScheme="purple" fontSize="lg" p={2}>
-          Página de información
-        </Badge>
-        
-        <Text fontSize="lg">
-          Este es un proyecto de prueba usando Chakra UI v2 y React Router DOM.
-        </Text>
-        
-        {/* Navegación de regreso */}
-        <Button
-          colorScheme="purple"
-          leftIcon={<ArrowBackIcon />}
-          onClick={() => navigate('/')}
-        >
-          Volver a Home
-        </Button>
-      </VStack>
+    <Box py={10} px={6} maxW="800px" mx="auto">
+      <Heading as="h1" size="2xl" mb={4}>
+        ℹ️ About
+      </Heading>
+      <Text fontSize="xl" mb={6}>
+        Esta es una aplicación de ejemplo con React Router y Chakra UI v2
+      </Text>
+      
+      <Box mt={8} p={6} bg="teal.50" borderRadius="md">
+        <Heading size="md" mb={4}>📚 Conceptos implementados:</Heading>
+        <List spacing={3}>
+          <ListItem>
+            <ListIcon as={CheckCircleIcon} color="teal.500" />
+            <strong>Rutas estáticas</strong> - Como esta página
+          </ListItem>
+          <ListItem>
+            <ListIcon as={CheckCircleIcon} color="teal.500" />
+            <strong>Rutas dinámicas</strong> - Users con IDs
+          </ListItem>
+          <ListItem>
+            <ListIcon as={CheckCircleIcon} color="teal.500" />
+            <strong>Query params</strong> - Búsqueda en Products
+          </ListItem>
+          <ListItem>
+            <ListIcon as={CheckCircleIcon} color="teal.500" />
+            <strong>Navegación</strong> - Link y useNavigate
+          </ListItem>
+          <ListItem>
+            <ListIcon as={CheckCircleIcon} color="teal.500" />
+            <strong>404</strong> - Página no encontrada
+          </ListItem>
+        </List>
+      </Box>
     </Box>
   );
-};
-
-export default About;
+}

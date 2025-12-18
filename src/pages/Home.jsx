@@ -1,52 +1,44 @@
 /**
- * 🏠 HOME - Página de inicio
+ * 🧭 HOME - Navegación Imperativa con useNavigate
  * 
  * Conceptos clave:
+ * - useNavigate permite navegar programáticamente
+ * - Útil para redirigir después de acciones (login, submit, etc.)
+ * - Diferencia con Link: useNavigate es para lógica, Link para UI
  * 
- * 📌 NAVEGACIÓN IMPERATIVA - useNavigate:
- * - useNavigate() devuelve una función para navegar programáticamente
- * - Se usa en eventos como onClick, después de un login, al enviar un form, etc.
- * - navigate('/ruta'): Navega a una ruta específica
- * 
- * 📌 CHAKRA UI - VStack:
- * - VStack: Stack vertical (apila elementos verticalmente)
- * - spacing: Espacio entre elementos
- * - align: Alineación de los elementos
- * 
- * 📌 BOTONES CON ICONOS:
- * - rightIcon: Agrega un icono a la derecha del texto
- * - leftIcon: Agrega un icono a la izquierda del texto
+ * ¿Cuándo usar useNavigate?
+ * ✅ Después de enviar un formulario
+ * ✅ Después de hacer login
+ * ✅ En respuesta a eventos (onClick, setTimeout, etc.)
+ * ✅ Cuando necesitas navegar condicionalmente
  */
 
-import { Box, Heading, Text, Button, VStack } from '@chakra-ui/react';
-import { useNavigate } from 'react-router-dom';
-import { ArrowForwardIcon } from '@chakra-ui/icons';
+import { Box, Heading, Text, Button } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 
-const Home = () => {
-  // Hook para navegación programática
+export default function Home() {
+  // 🎯 useNavigate retorna una función para navegar
   const navigate = useNavigate();
 
   return (
-    <Box p={8}>
-      <VStack spacing={6} align="stretch">
-        <Heading as="h1" size="2xl" color="teal.500">
-          🏠 Home
-        </Heading>
-        <Text fontSize="lg">
-          Bienvenido al proyecto con Chakra UI y React Router DOM
+    <Box textAlign="center" py={10} px={6}>
+      <Heading as="h1" size="2xl" mb={4}>
+        🏠 Home
+      </Heading>
+      <Text fontSize="xl" mb={6}>
+        Bienvenida a la página principal
+      </Text>
+      
+      {/* 👉 navigate() cambia la URL sin recargar la página */}
+      <Button colorScheme="teal" onClick={() => navigate("/about")}>
+        Ir a About
+      </Button>
+      
+      <Box mt={8} p={4} bg="gray.50" borderRadius="md">
+        <Text fontSize="sm" color="gray.600">
+          💡 Este botón usa <strong>useNavigate()</strong> para navegar programáticamente
         </Text>
-        
-        {/* Navegación con useNavigate - Útil para redirecciones desde eventos */}
-        <Button
-          colorScheme="teal"
-          rightIcon={<ArrowForwardIcon />}
-          onClick={() => navigate('/about')}
-        >
-          Ir a About
-        </Button>
-      </VStack>
+      </Box>
     </Box>
   );
-};
-
-export default Home;
+}

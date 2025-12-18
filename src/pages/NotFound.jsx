@@ -1,54 +1,52 @@
 /**
- * 🚫 NOT FOUND - Página 404
+ * 🚫 NOT FOUND - Ruta 404 (Catch-All)
  * 
  * Conceptos clave:
+ * - Definida en App.jsx como: <Route path="*" element={<NotFound />} />
+ * - El asterisco (*) captura CUALQUIER ruta no definida
+ * - SIEMPRE debe ir al final de las rutas
  * 
- * 📌 RUTA 404:
- * - Esta página se muestra cuando una ruta no existe
- * - Se define con path="*" en las Routes
- * - Debe estar al final de todas las rutas
- * - En este proyecto NO usa el layout (no tiene Header/Footer)
+ * ¿Cómo funciona?
+ * - React Router intenta hacer match con cada ruta en orden
+ * - Si ninguna coincide, llega al *
+ * - El * es como un "else" en programación
  * 
- * 📌 ICONOS CON TAMAÑO:
- * - boxSize: Define el tamaño del icono
- * - Puede ser un número (en unidades de Chakra) o un valor CSS
+ * Ejemplos de URLs que llevan aquí:
+ * - /pagina-que-no-existe ✅
+ * - /users/abc/xyz ✅
+ * - /productos123 ✅
  * 
- * 📌 CENTRADO:
- * - textAlign="center": Centra el texto
- * - VStack con spacing: Apila elementos verticalmente con espacio entre ellos
+ * ⚠️ IMPORTANTE: Si el * está antes de otras rutas, capturará todo
  */
 
-import { Box, Heading, Text, Button, VStack } from '@chakra-ui/react';
-import { useNavigate } from 'react-router-dom';
-import { WarningIcon } from '@chakra-ui/icons';
+import { Box, Heading, Text, Button, VStack } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 
-const NotFound = () => {
+export default function NotFound() {
   const navigate = useNavigate();
 
   return (
-    <Box p={8} textAlign="center">
+    <Box textAlign="center" py={20} px={6}>
       <VStack spacing={6}>
-        {/* Icono grande de advertencia */}
-        <WarningIcon boxSize={16} color="red.500" />
-        
-        <Heading as="h1" size="2xl" color="red.500">
+        <Heading as="h1" size="4xl">
           404
         </Heading>
-        
-        <Text fontSize="xl">
-          Página no encontrada
+        <Text fontSize="2xl">
+          🚫 Página no encontrada
         </Text>
         
-        {/* Botón para volver al inicio */}
-        <Button
-          colorScheme="blue"
-          onClick={() => navigate('/')}
-        >
+        <Box p={4} bg="red.50" borderRadius="md" maxW="500px">
+          <Text fontSize="sm" color="red.800">
+            💡 <strong>Ruta catch-all (*):</strong><br/>
+            Esta página captura cualquier URL que no exista.<br/>
+            Definida como: <code>&lt;Route path="*" element=&lt;NotFound /&gt; /&gt;</code>
+          </Text>
+        </Box>
+        
+        <Button colorScheme="teal" size="lg" onClick={() => navigate("/")}>
           Ir al inicio
         </Button>
       </VStack>
     </Box>
   );
-};
-
-export default NotFound;
+}
