@@ -23,6 +23,7 @@ import Home from './pages/Home';
 import About from './pages/About';
 import Users from './pages/Users';
 import NotFound from './pages/NotFound';
+import User from './pages/User';
 
 function App() {
   return (
@@ -33,6 +34,8 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/users" element={<Users />} />
+          <Route path="/users/:id" element={<User  />} />
+
         </Route>
         
         {/* Ruta sin Layout - La página 404 no usa el layout principal */}
